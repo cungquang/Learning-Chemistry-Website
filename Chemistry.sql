@@ -80,6 +80,50 @@ INSERT INTO ReplyComment(CommentID, PostID, Content, CommentDate, CommentTime) V
 
 SELECT * FROM ReplyComment;
 
+############################################################ SEARCH BREANCH ##########################################################################################
+CREATE TABLE IF NOT EXISTS Compound(
+	CompoundName VARCHAR(30) NOT NULL UNIQUE,
+    ChemicalFormula VARCHAR(10)  NOT NULL UNIQUE,
+    AtomicNumber INT,
+    State VARCHAR(30),
+    MeltingPoint INT,
+    BoilingPoint INT,
+    Appearance VARCHAR(100),
+    MolecularWeight VARCHAR(30),
+    PRIMARY KEY(ChemicalFormula)
+);
+
+CREATE TABLE IF NOT EXISTS Produces(
+	ReactantFormula VARCHAR(30) NOT NULL,
+    ProductFormula VARCHAR(30) NOT NULL,
+    ChemicalEquation VARCHAR(100) NOT NULL,
+    ReactionCondition VARCHAR(100),
+    PRIMARY KEY(ReactantFormula, ProductFormula),
+    FOREIGN KEY(ReactantFormula) REFERENCES Compound(ChemicalFormula) ON DELETE CASCADE,
+    FOREIGN KEY(ProductFormula) REFERENCES Compound(ChemicalFormula) ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS Search (
+	CompoundFormula VARCHAR(30) NOT NULL UNIQUE,
+	UserID INT NOT NULL UNIQUE, 
+	PRIMARY KEY(CompoundFormula, UserID),
+	FOREIGN KEY(CompoundFormula) REFERENCES Compound(CompoundFormula) ON DELETE CASCADE,
+    FOREIGN KEY(UserID) REFERENCES RegisterUser(ID) ON DELETE CASCADE
+); 
+
+CREATE TABLE IF NOT EXISTS SearchHistory( 
+	CompoundFormula VARCHAR(30) NOT NULL UNIQUE, 
+	UserID INT NOT NULL UNIQUE, 
+	KeywordHistory VARCHAR (100), 
+	PRIMARY KEY(CompoundFormula, UserID),
+	FOREIGN KEY(CompoundFormula, UserID) REFERENCES Search(CompoundFormula,UserID) ON DELETE CASCADE
+);
+
+
+
+
+############################################################ End of Search ###########################################################################################
 
 DROP TABLE RegisterUser;
 DROP TABLE Post;
