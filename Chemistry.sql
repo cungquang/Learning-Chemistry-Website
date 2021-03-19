@@ -31,21 +31,21 @@ CREATE TABLE IF NOT EXISTS Compound(
     MolecularWeight VARCHAR(30),
     PRIMARY KEY(ChemicalFormula)
 );
-    INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
+INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
 	VALUE("Calcium", "Ca", 20, "Solid", 842, 1484, "Null gray, silver; with a pale yellow tint", "40.078u");
-    INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
+INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
 	VALUE("Magnesium", "Mg", 12, "Solid", 650, 1107, "A silvery-white metal that ignites easily in air and burns with a bright light.", "24.305u");
-    INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
+INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
 	VALUE("Carbon Dioxide", "CO2", NULL, NULL, -56.6, NULL, "Colorless gas", "44.009u");
-    INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
+INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
 	VALUE("Hydrogen", "H", 1, "Gas", -259.16, -252.879, "Colorless gas", "1.008u");
-    INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
+INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
 	VALUE("Oxygen", "O", 8, NULL, -218.79, -182.96, "Colorless gas", "15.999u");
-   INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight)
+INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight)
 	VALUE("Calcium Carbonate", "CaCO3", NULL, "Solid", 1339, NULL, "Fine white powder; chalky taste", "100.09u");
-    INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
+INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
 	VALUE("Hydrogen Hydroxide", "H2O", NULL, "Liquid", 0, 99.98, "White crystalline solid, almost colorless liquid with a hint of blue, colorless gas", "18.015u");
-    INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
+INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
 	VALUE("Calcium Oxide", "CaO", NULL, "Solid", 2613, 2850, "White to pale yellow/brown powder", "56.077u");
     
 CREATE TABLE IF NOT EXISTS Produces(
@@ -58,46 +58,47 @@ CREATE TABLE IF NOT EXISTS Produces(
     FOREIGN KEY(ProductFormula) REFERENCES Compound(ChemicalFormula) ON DELETE CASCADE
 );
 INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
-VALUE((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium oxide"), "2Ca + O2 -> 2CaO", NULL); 
+	VALUE((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium oxide"), "2Ca + O2 -> 2CaO", NULL); 
 INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
-VALUE((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Oxygen"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium oxide"), "2Ca + O2 -> 2CaO", NULL); 
+	VALUE((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Oxygen"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium oxide"), "2Ca + O2 -> 2CaO", NULL); 
 INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
-VALUE((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Hydrogen"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Hydrogen Hydroxide"), "2H2 + O2 -> 2H2O", NULL); 
+	VALUE((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Hydrogen"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Hydrogen Hydroxide"), "2H2 + O2 -> 2H2O", NULL); 
 INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
-VALUE((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Oxygen"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Hydrogen Hydroxide"), "2H2 + O2 -> 2H2O", NULL); 
+	VALUE((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Oxygen"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Hydrogen Hydroxide"), "2H2 + O2 -> 2H2O", NULL); 
 INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
-VALUE((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Carbonate"), "CaO + CO2 -> CaCO3", NULL); 
+	VALUE((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Carbonate"), "CaO + CO2 -> CaCO3", NULL); 
 INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
-VALUE((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Carbon Dioxide"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Carbonate"), "CaO + CO2 -> CaCO3", NULL); 
+	VALUE((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Carbon Dioxide"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Carbonate"), "CaO + CO2 -> CaCO3", NULL); 
 
 
 
 CREATE TABLE IF NOT EXISTS Search (
 	CompoundFormula VARCHAR(30) NOT NULL,
-	UserID INT NOT NULL, 
+	UserID CHAR(50) NOT NULL, 
 	PRIMARY KEY(CompoundFormula, UserID),
 	FOREIGN KEY(CompoundFormula) REFERENCES Compound(ChemicalFormula) ON DELETE CASCADE,
-    FOREIGN KEY(UserID) REFERENCES RegisterUser(ID) ON DELETE CASCADE
+    FOREIGN KEY(UserID) REFERENCES RegisterUser(UserID) ON DELETE CASCADE
 ); 
-INSERT INTO Search (CompoundFormula, UserID) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium"),(SELECT ID FROM RegisterUser WHERE ID = 1));
-INSERT INTO Search (CompoundFormula, UserID) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Oxygen"),(SELECT ID FROM RegisterUser WHERE ID = 2));
-INSERT INTO Search (CompoundFormula, UserID) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Hydrogen Hydroxide"),(SELECT ID FROM RegisterUser WHERE ID = 3));
-INSERT INTO Search (CompoundFormula, UserID) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Carbonate"),(SELECT ID FROM RegisterUser WHERE ID = 4));
-INSERT INTO Search (CompoundFormula, UserID) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Oxide"),(SELECT ID FROM RegisterUser WHERE ID = 3));
+
+INSERT INTO Search (CompoundFormula, UserID) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium"),(SELECT UserID FROM RegisterUser WHERE UserID = "Frank2012"));
+INSERT INTO Search (CompoundFormula, UserID) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Oxygen"),(SELECT UserID FROM RegisterUser WHERE UserID = "George123"));
+INSERT INTO Search (CompoundFormula, UserID) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Hydrogen Hydroxide"),(SELECT UserID FROM RegisterUser WHERE UserID = "Mary007"));
+INSERT INTO Search (CompoundFormula, UserID) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Carbonate"),(SELECT UserID FROM RegisterUser WHERE UserID = "Mary007"));
+INSERT INTO Search (CompoundFormula, UserID) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Oxide"),(SELECT UserID FROM RegisterUser WHERE UserID = "Peter238"));
 
 CREATE TABLE IF NOT EXISTS SearchHistory( 
 	CompoundFormula VARCHAR(30) NOT NULL, 
-	UserID INT NOT NULL, 
+	UserID CHAR(50) NOT NULL, 
 	KeywordHistory VARCHAR (100), 
 	PRIMARY KEY(CompoundFormula, UserID),
 	FOREIGN KEY(CompoundFormula, UserID) REFERENCES Search(CompoundFormula,UserID) ON DELETE CASCADE
 );
 
-INSERT INTO SearchHistory (CompoundFormula, UserID, KeywordHistory) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium"),(SELECT ID FROM RegisterUser WHERE ID = 1), "Ca CaCO3");
-INSERT INTO SearchHistory (CompoundFormula, UserID, KeywordHistory) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Oxygen"),(SELECT ID FROM RegisterUser WHERE ID = 2), "O2 H2O");
-INSERT INTO SearchHistory (CompoundFormula, UserID, KeywordHistory) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Hydrogen Hydroxide"),(SELECT ID FROM RegisterUser WHERE ID = 3),"H2 O2");
-INSERT INTO SearchHistory (CompoundFormula, UserID, KeywordHistory) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Carbonate"),(SELECT ID FROM RegisterUser WHERE ID = 4),"CaCO3 Ca CO2");
-INSERT INTO SearchHistory (CompoundFormula, UserID, KeywordHistory) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Oxide"),(SELECT ID FROM RegisterUser WHERE ID = 3), "Ca O2");
+INSERT INTO SearchHistory (CompoundFormula, UserID, KeywordHistory) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium"),(SELECT UserID FROM RegisterUser WHERE UserID = "Frank2012"), "Ca CaCO3");
+INSERT INTO SearchHistory (CompoundFormula, UserID, KeywordHistory) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Oxygen"),(SELECT UserID FROM RegisterUser WHERE UserID = "George123"), "O2 H2O");
+INSERT INTO SearchHistory (CompoundFormula, UserID, KeywordHistory) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Hydrogen Hydroxide"),(SELECT UserID FROM RegisterUser WHERE UserID = "Mary007"),"H2 O2");
+INSERT INTO SearchHistory (CompoundFormula, UserID, KeywordHistory) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Carbonate"),(SELECT UserID FROM RegisterUser WHERE UserID = "Mary007"),"CaCO3 Ca CO2");
+INSERT INTO SearchHistory (CompoundFormula, UserID, KeywordHistory) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Oxide"),(SELECT UserID FROM RegisterUser WHERE UserID = "Peter238"), "Ca O2");
 
 
 ############################################################ End of Search ###########################################################################################
