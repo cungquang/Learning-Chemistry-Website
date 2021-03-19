@@ -18,14 +18,8 @@ INSERT INTO RegisterUser VALUES("Peter238", "Peter", "Allan", "pallan9910@gmail.
 
 SELECT * FROM RegisterUser;
 
-INSERT INTO RegisterUser(ID, Firstname, LastName, EmaiL) VALUES(1, "Chris", "Liu", "chris_liu@sfu.ca");
-INSERT INTO RegisterUser(ID, Firstname, LastName, EmaiL) VALUES(2, "Frank", "Dong", "frank_dong@sfu.ca");
-INSERT INTO RegisterUser(ID, Firstname, LastName, EmaiL) VALUES(3, "John", "Minh", "john_minh@sfu.ca");
-INSERT INTO RegisterUser(ID, Firstname, LastName, EmaiL) VALUES(4, "Xixuan", "Liu", "chris_liu@sfu.ca");
-INSERT INTO RegisterUser(ID, Firstname, LastName, EmaiL) VALUES(5, "Hong", "Cung", "hong_cung@sfu.ca");
-
-
 ############################################################ SEARCH BRANCH ##########################################################################################
+
 CREATE TABLE IF NOT EXISTS Compound(
 	CompoundName VARCHAR(30) NOT NULL,
     ChemicalFormula VARCHAR(10)  NOT NULL,
@@ -111,6 +105,7 @@ INSERT INTO SearchHistory (CompoundFormula, UserID, KeywordHistory) VALUES ((SEL
 
 
 ############################################################ LEARN BRANCH ##########################################################################################
+
 CREATE TABLE IPAddress(
 IPAddress CHAR(50) NOT NULL,
 UserID CHAR(50) NOT NULL, 
@@ -222,21 +217,19 @@ INSERT INTO Post(PostID, PostTitle, PostContent, PostDate, PostTime) VALUES(5, "
 
 
 CREATE TABLE IF NOT EXISTS Discuss(
-	PostID INT NOT NULL UNIQUE,
-    ID INT NOT NULL,
+	PostID INT NOT NULL,
+    UserID CHAR(50) NOT NULL,
     CreatorName CHAR(200) NOT NULL,
-    PRIMARY KEY (PostID, ID),
+    PRIMARY KEY (PostID, UserID),
 	FOREIGN KEY (PostID) references Post(PostID) ON DELETE CASCADE,
-    FOREIGN KEY (ID) references RegisterUser(ID) ON DELETE CASCADE
+    FOREIGN KEY (UserID) references RegisterUser(UserID) ON DELETE CASCADE
 );
 
-
-INSERT INTO Discuss(PostID, ID, CreatorName) VALUES(1, 1,(SELECT FirstName FROM RegisterUser WHERE ID = 1));
-INSERT INTO Discuss(PostID, ID, CreatorName) VALUES(2, 2,(SELECT FirstName FROM RegisterUser WHERE ID = 2));
-INSERT INTO Discuss(PostID, ID, CreatorName) VALUES(4, 3,(SELECT FirstName FROM RegisterUser WHERE ID = 3));
-INSERT INTO Discuss(PostID, ID, CreatorName) VALUES(3, 4,(SELECT FirstName FROM RegisterUser WHERE ID = 4));
-INSERT INTO Discuss(PostID, ID, CreatorName) VALUES(5, 3,(SELECT FirstName FROM RegisterUser WHERE ID = 5));
-
+INSERT INTO Discuss(PostID, UserID, CreatorName) VALUES(1, "Frank2012",(SELECT FirstName FROM RegisterUser WHERE UserID LIKE "Frank2012"));
+INSERT INTO Discuss(PostID, UserID, CreatorName) VALUES(1, "George123",(SELECT FirstName FROM RegisterUser WHERE UserID LIKE "George123"));
+INSERT INTO Discuss(PostID, UserID, CreatorName) VALUES(2, "Jason054",(SELECT FirstName FROM RegisterUser WHERE UserID LIKE "Jason054"));
+INSERT INTO Discuss(PostID, UserID, CreatorName) VALUES(2, "Peter238",(SELECT FirstName FROM RegisterUser WHERE UserID LIKE "Peter238"));
+INSERT INTO Discuss(PostID, UserID, CreatorName) VALUES(5, "Frank2012",(SELECT FirstName FROM RegisterUser WHERE UserID LIKE "Frank2012"));
 
 CREATE TABLE IF NOT EXISTS ReplyComment(
 	CommentID INT NOT NULL,
@@ -250,14 +243,14 @@ CREATE TABLE IF NOT EXISTS ReplyComment(
 );
 
 INSERT INTO ReplyComment(CommentID, PostID, EditorName, Content, CommentDate, CommentTime) VALUES(1, 2, 
-	(SELECT FirstName FROM RegisterUser R WHERE R.ID = 3),"Hello World", curdate(), curtime()); 
+	(SELECT FirstName FROM RegisterUser R WHERE R.UserID = "Frank2012"),"Hello World", curdate(), curtime()); 
 INSERT INTO ReplyComment(CommentID, PostID, EditorName, Content, CommentDate, CommentTime) VALUES(2, 2, 
-	(SELECT FirstName FROM RegisterUser R WHERE R.ID = 4),"Hello World", curdate(), curtime()); 
+	(SELECT FirstName FROM RegisterUser R WHERE R.UserID = "George123"),"Hello World", curdate(), curtime()); 
 INSERT INTO ReplyComment(CommentID, PostID, EditorName, Content, CommentDate, CommentTime) VALUES(3, 3, 
-	(SELECT FirstName FROM RegisterUser R WHERE R.ID = 4),"Hello World", curdate(), curtime()); 
+	(SELECT FirstName FROM RegisterUser R WHERE R.UserID = "Peter238"),"Hello World", curdate(), curtime()); 
 INSERT INTO ReplyComment(CommentID, PostID, EditorName, Content, CommentDate, CommentTime) VALUES(4, 1, 
-	(SELECT FirstName FROM RegisterUser R WHERE R.ID = 1),"Hello World", curdate(), curtime()); 
-INSERT INTO ReplyComment(CommentID, PostID, Content, CommentDate, CommentTime) VALUES(3, 2, "Hello World", curdate(), curtime()); 
+	(SELECT FirstName FROM RegisterUser R WHERE R.UserID = "Mary007"),"Hello World", curdate(), curtime()); 
+INSERT INTO ReplyComment(CommentID, PostID, EditorName, Content, CommentDate, CommentTime) VALUES(5, 5,"Jason", "Hello World", curdate(), curtime()); 
 
 ############################################################ End of Discuss ###########################################################################################
 
