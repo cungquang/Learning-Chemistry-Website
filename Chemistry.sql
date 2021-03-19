@@ -2,84 +2,30 @@ CREATE DATABASE IF NOT EXISTS Chemistry;
 USE Chemistry;
 
 CREATE TABLE IF NOT EXISTS RegisterUser(
-	ID INT NOT NULL UNIQUE,
-    FirstName CHAR(100) NOT NULL,
-    LastName CHAR(100) NOT NULL,
-    Email VARCHAR(300) NOT NULL,
-    PRIMARY KEY(ID)
-);
+UserID CHAR(50) NOT NULL, 
+FirstName CHAR(50) NOT NULL,
+LastName CHAR(50) NOT NULL,
+Email CHAR(100) NOT NULL,
+PRIMARY KEY(UserID),
+UNIQUE(UserID)
+);	
+
+INSERT INTO RegisterUser VALUES("Frank2012", "Lei", "Dong", "frankdong2012@gmail.com");
+INSERT INTO RegisterUser VALUES("George123", "George", "Smith", "gsmite0202@sfu.ca"); 
+INSERT INTO RegisterUser VALUES("Jason054", "Jason", "Lee", "jlee9806@sfu.ca");
+INSERT INTO RegisterUser VALUES("Mary007", "Mary", "James", "mjames9712@gmail.com");
+INSERT INTO RegisterUser VALUES("Peter238", "Peter", "Allan", "pallan9910@gmail.com");
+
+SELECT * FROM RegisterUser;
 
 INSERT INTO RegisterUser(ID, Firstname, LastName, EmaiL) VALUES(1, "Chris", "Liu", "chris_liu@sfu.ca");
 INSERT INTO RegisterUser(ID, Firstname, LastName, EmaiL) VALUES(2, "Frank", "Dong", "frank_dong@sfu.ca");
 INSERT INTO RegisterUser(ID, Firstname, LastName, EmaiL) VALUES(3, "John", "Minh", "john_minh@sfu.ca");
 INSERT INTO RegisterUser(ID, Firstname, LastName, EmaiL) VALUES(4, "Xixuan", "Liu", "chris_liu@sfu.ca");
 INSERT INTO RegisterUser(ID, Firstname, LastName, EmaiL) VALUES(5, "Hong", "Cung", "hong_cung@sfu.ca");
-SELECT * FROM RegisterUser;
 
 
-CREATE TABLE IF NOT EXISTS Post(
-	PostID INT NOT NULL UNIQUE,
-    PostTitle CHAR(200),
-    PostContent VARCHAR(600) NOT NULL,
-    PostDate DATE NOT NULL,
-    PostTime TIME NOT NULL,
-    PRIMARY KEY (PostID)
-);
-
-INSERT INTO Post(PostID, PostTitle, PostContent, PostDate, PostTime) VALUES(1, "Chris Post", "By Chris Liu", curdate(), curtime());
-INSERT INTO Post(PostID, PostTitle, PostContent, PostDate, PostTime) VALUES(2, "Frank Post", "By Frank Dong", curdate(), curtime());
-INSERT INTO Post(PostID, PostTitle, PostContent, PostDate, PostTime) VALUES(3, "John Post", "By John Minh", curdate(), curtime());
-INSERT INTO Post(PostID, PostTitle, PostContent, PostDate, PostTime) VALUES(4, "Xixuan Post", "By Xixuan", curdate(), curtime());
-INSERT INTO Post(PostID, PostTitle, PostContent, PostDate, PostTime) VALUES(5, "Hong Post", "By Hong", curdate(), curtime());
-
-
-DELETE FROM Post WHERE PostID = 5;
-SELECT * FROM Post;
-
-
-CREATE TABLE IF NOT EXISTS Discuss(
-	PostID INT NOT NULL UNIQUE,
-    ID INT NOT NULL,
-    CreatorName CHAR(200) NOT NULL,
-    PRIMARY KEY (PostID, ID),
-	FOREIGN KEY (PostID) references Post(PostID) ON DELETE CASCADE,
-    FOREIGN KEY (ID) references RegisterUser(ID) ON DELETE CASCADE
-);
-
-
-INSERT INTO Discuss(PostID, ID, CreatorName) VALUES(1, 1,(SELECT FirstName FROM RegisterUser WHERE ID = 1));
-INSERT INTO Discuss(PostID, ID, CreatorName) VALUES(2, 2,(SELECT FirstName FROM RegisterUser WHERE ID = 2));
-INSERT INTO Discuss(PostID, ID, CreatorName) VALUES(4, 3,(SELECT FirstName FROM RegisterUser WHERE ID = 3));
-INSERT INTO Discuss(PostID, ID, CreatorName) VALUES(3, 4,(SELECT FirstName FROM RegisterUser WHERE ID = 4));
-INSERT INTO Discuss(PostID, ID, CreatorName) VALUES(5, 3,(SELECT FirstName FROM RegisterUser WHERE ID = 5));
-
-SELECT * FROM Discuss;
-
-
-
-CREATE TABLE IF NOT EXISTS ReplyComment(
-	CommentID INT NOT NULL,
-    PostID INT NOT NULL,
-    EditorName CHAR(200) DEFAULT "Anonymous",
-    Content VARCHAR(500),
-    CommentDate DATE NOT NULL,
-    CommentTime TIME NOT NULL,
-    PRIMARY KEY(CommentID, PostID),
-    FOREIGN KEY Comment(PostID) references Post(PostID) ON DELETE CASCADE
-);
-
-INSERT INTO ReplyComment(CommentID, PostID, EditorName, Content, CommentDate, CommentTime) VALUES(1, 2, 
-	(SELECT FirstName FROM RegisterUser R WHERE R.ID = 3),"Hello World", curdate(), curtime()); 
-INSERT INTO ReplyComment(CommentID, PostID, EditorName, Content, CommentDate, CommentTime) VALUES(2, 2, 
-	(SELECT FirstName FROM RegisterUser R WHERE R.ID = 4),"Hello World", curdate(), curtime()); 
-INSERT INTO ReplyComment(CommentID, PostID, EditorName, Content, CommentDate, CommentTime) VALUES(3, 3, 
-	(SELECT FirstName FROM RegisterUser R WHERE R.ID = 4),"Hello World", curdate(), curtime()); 
-INSERT INTO ReplyComment(CommentID, PostID, EditorName, Content, CommentDate, CommentTime) VALUES(4, 1, 
-	(SELECT FirstName FROM RegisterUser R WHERE R.ID = 1),"Hello World", curdate(), curtime()); 
-INSERT INTO ReplyComment(CommentID, PostID, Content, CommentDate, CommentTime) VALUES(3, 2, "Hello World", curdate(), curtime()); 
-
-
-############################################################ SEARCH BREANCH ##########################################################################################
+############################################################ SEARCH BRANCH ##########################################################################################
 CREATE TABLE IF NOT EXISTS Compound(
 	CompoundName VARCHAR(30) NOT NULL,
     ChemicalFormula VARCHAR(10)  NOT NULL,
@@ -160,9 +106,164 @@ INSERT INTO SearchHistory (CompoundFormula, UserID, KeywordHistory) VALUES ((SEL
 INSERT INTO SearchHistory (CompoundFormula, UserID, KeywordHistory) VALUES ((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Oxide"),(SELECT ID FROM RegisterUser WHERE ID = 3), "Ca O2");
 
 
-
-
 ############################################################ End of Search ###########################################################################################
+
+
+
+############################################################ LEARN BRANCH ##########################################################################################
+CREATE TABLE IPAddress(
+IPAddress CHAR(50) NOT NULL,
+UserID CHAR(50) NOT NULL, 
+PRIMARY KEY(UserID),
+UNIQUE(UserID),
+FOREIGN KEY(UserID) references RegisterUser(UserID) ON DELETE CASCADE
+);
+INSERT INTO IPAddress VALUES("192.168.2.0", "Frank2012");
+INSERT INTO IPAddress VALUES("162.16.215.3", "George123");
+INSERT INTO IPAddress VALUES("132.122.70.8", "Jason054");
+INSERT INTO IPAddress VALUES("238.17.204.32", "Mary007");
+INSERT INTO IPAddress VALUES("182.138.1.5", "Peter238");
+
+SELECT * FROM IPAddress;
+
+CREATE TABLE PracticeQuestion(
+QuestionID INT NOT NULL,
+Content VARCHAR(500) NOT NULL,
+Solution VARCHAR(500) NOT NULL,
+Difficulty CHAR(50) NOT NULL, 
+PRIMARY KEY(QuestionID),
+UNIQUE(QuestionID)
+);
+INSERT INTO PracticeQuestion VALUES(1, "Zn(s) + Hcl(aq) -> ZnCl2(aq) + H2(g)", "Zn(s) + 2Hcl(aq) -> ZnCl2(aq) + H2(g)", "easy");
+INSERT INTO PracticeQuestion VALUES(2, "Al(s) + H2SO4(aq) -> Al2(SO4)3(aq) + H2(g)", "2Al(s) + 3H2SO4(aq) -> Al2(SO4)3(aq) + 3H2(g)", "medium");
+INSERT INTO PracticeQuestion VALUES(3, "NaOH(aq) + FeCl3(aq) -> NaCl(aq) + Fe(OH)3(s)", "3NaOH(aq) + FeCl3(aq) -> 3NaCl(aq) + Fe(OH)3(s)", "medium");
+INSERT INTO PracticeQuestion VALUES(4, "Which one of the following is not a strong acid ?", "C", "easy");
+INSERT INTO PracticeQuestion VALUES(5, "Which one of the following is not the necessary condition for combustion reaction ?", "D", "medium");
+
+SELECT * FROM PracticeQuestion;
+
+CREATE TABLE BalanceEquation(
+QuestionID INT NOT NULL,
+PRIMARY KEY(QuestionID),
+UNIQUE(QuestionID),
+FOREIGN KEY(QuestionID) references PracticeQuestion(QuestionID) ON DELETE CASCADE
+);
+INSERT INTO BalanceEquation VALUES(1);
+INSERT INTO BalanceEquation VALUES(2);
+INSERT INTO BalanceEquation VALUES(3);
+
+SELECT * FROM BalanceEquation;
+
+CREATE TABLE MultipleChoice(
+QuestionID INT NOT NULL,
+PRIMARY KEY(QuestionID),
+UNIQUE(QuestionID),
+FOREIGN KEY(QuestionID) references PracticeQuestion(QuestionID) ON DELETE CASCADE
+);
+INSERT INTO MultipleChoice VALUES(4);
+INSERT INTO MultipleChoice VALUES(5);
+
+SELECT * FROM MultipleChoice;
+
+CREATE TABLE Choice(
+QuestionID INT NOT NULL,
+ChoiceID CHAR(3) NOT NULL,
+Content VARCHAR(500) NOT NULL,
+Explanation VARCHAR(500),
+PRIMARY KEY(QuestionID, ChoiceID),
+FOREIGN KEY(QuestionID) references MultipleChoice(QuestionID) ON DELETE CASCADE
+);
+INSERT INTO Choice VALUES(4, "A", "HCl", NULL);
+INSERT INTO Choice VALUES(4, "B", "H2SO4", NULL);
+INSERT INTO Choice VALUES(4, "C", "H3PO4", NULL);
+INSERT INTO Choice VALUES(4, "D", "HBr", NULL);
+INSERT INTO Choice VALUES(5, "A", "Flammabe substance", NULL);
+INSERT INTO Choice VALUES(5, "B", "Supporter gas of combustion", NULL);
+INSERT INTO Choice VALUES(5, "C", "Ignition temperature", NULL);
+INSERT INTO Choice VALUES(5, "D", "Presence of fire", "The presence of fire is not necessary as long as ignition temperature is reached");
+
+SELECT * FROM Choice;
+
+CREATE TABLE Learn(
+UserID CHAR(50) NOT NULL, 
+QuestionID INT NOT NULL,
+PRIMARY KEY(UserID, QuestionID),
+UNIQUE(UserID, QuestionID),
+FOREIGN KEY(UserID) references RegisterUser(UserID) ON DELETE CASCADE,
+FOREIGN KEY(QuestionID) references PracticeQuestion(QuestionID) ON DELETE CASCADE
+);
+INSERT INTO Learn VALUES("Frank2012", 2);
+INSERT INTO Learn VALUES("Frank2012", 3);
+INSERT INTO Learn VALUES("Frank2012", 4);
+INSERT INTO Learn VALUES("Jason054", 1);
+INSERT INTO Learn VALUES("Peter238", 5);
+
+SELECT * FROM Learn;
+############################################################ End of Learn ###########################################################################################
+
+
+
+############################################################ DISCUSS BRANCH ##########################################################################################
+
+CREATE TABLE IF NOT EXISTS Post(
+	PostID INT NOT NULL UNIQUE,
+    PostTitle CHAR(200),
+    PostContent VARCHAR(600) NOT NULL,
+    PostDate DATE NOT NULL,
+    PostTime TIME NOT NULL,
+    PRIMARY KEY (PostID)
+);
+
+INSERT INTO Post(PostID, PostTitle, PostContent, PostDate, PostTime) VALUES(1, "Chris Post", "By Chris Liu", curdate(), curtime());
+INSERT INTO Post(PostID, PostTitle, PostContent, PostDate, PostTime) VALUES(2, "Frank Post", "By Frank Dong", curdate(), curtime());
+INSERT INTO Post(PostID, PostTitle, PostContent, PostDate, PostTime) VALUES(3, "John Post", "By John Minh", curdate(), curtime());
+INSERT INTO Post(PostID, PostTitle, PostContent, PostDate, PostTime) VALUES(4, "Xixuan Post", "By Xixuan", curdate(), curtime());
+INSERT INTO Post(PostID, PostTitle, PostContent, PostDate, PostTime) VALUES(5, "Hong Post", "By Hong", curdate(), curtime());
+
+
+CREATE TABLE IF NOT EXISTS Discuss(
+	PostID INT NOT NULL UNIQUE,
+    ID INT NOT NULL,
+    CreatorName CHAR(200) NOT NULL,
+    PRIMARY KEY (PostID, ID),
+	FOREIGN KEY (PostID) references Post(PostID) ON DELETE CASCADE,
+    FOREIGN KEY (ID) references RegisterUser(ID) ON DELETE CASCADE
+);
+
+
+INSERT INTO Discuss(PostID, ID, CreatorName) VALUES(1, 1,(SELECT FirstName FROM RegisterUser WHERE ID = 1));
+INSERT INTO Discuss(PostID, ID, CreatorName) VALUES(2, 2,(SELECT FirstName FROM RegisterUser WHERE ID = 2));
+INSERT INTO Discuss(PostID, ID, CreatorName) VALUES(4, 3,(SELECT FirstName FROM RegisterUser WHERE ID = 3));
+INSERT INTO Discuss(PostID, ID, CreatorName) VALUES(3, 4,(SELECT FirstName FROM RegisterUser WHERE ID = 4));
+INSERT INTO Discuss(PostID, ID, CreatorName) VALUES(5, 3,(SELECT FirstName FROM RegisterUser WHERE ID = 5));
+
+
+CREATE TABLE IF NOT EXISTS ReplyComment(
+	CommentID INT NOT NULL,
+    PostID INT NOT NULL,
+    EditorName CHAR(200) DEFAULT "Anonymous",
+    Content VARCHAR(500),
+    CommentDate DATE NOT NULL,
+    CommentTime TIME NOT NULL,
+    PRIMARY KEY(CommentID, PostID),
+    FOREIGN KEY Comment(PostID) references Post(PostID) ON DELETE CASCADE
+);
+
+INSERT INTO ReplyComment(CommentID, PostID, EditorName, Content, CommentDate, CommentTime) VALUES(1, 2, 
+	(SELECT FirstName FROM RegisterUser R WHERE R.ID = 3),"Hello World", curdate(), curtime()); 
+INSERT INTO ReplyComment(CommentID, PostID, EditorName, Content, CommentDate, CommentTime) VALUES(2, 2, 
+	(SELECT FirstName FROM RegisterUser R WHERE R.ID = 4),"Hello World", curdate(), curtime()); 
+INSERT INTO ReplyComment(CommentID, PostID, EditorName, Content, CommentDate, CommentTime) VALUES(3, 3, 
+	(SELECT FirstName FROM RegisterUser R WHERE R.ID = 4),"Hello World", curdate(), curtime()); 
+INSERT INTO ReplyComment(CommentID, PostID, EditorName, Content, CommentDate, CommentTime) VALUES(4, 1, 
+	(SELECT FirstName FROM RegisterUser R WHERE R.ID = 1),"Hello World", curdate(), curtime()); 
+INSERT INTO ReplyComment(CommentID, PostID, Content, CommentDate, CommentTime) VALUES(3, 2, "Hello World", curdate(), curtime()); 
+
+############################################################ End of Discuss ###########################################################################################
+
+
+
+############################################################ DELETE AND DROP ###########################################################################################
 
 DROP TABLE RegisterUser;
 DROP TABLE Post;
@@ -172,8 +273,5 @@ DROP TABLE Compound;
 DROP TABLE Produces; 
 DROP TABLE Search; 
 DROP TABLE SearchHistory; 
-
-
-
 
 DROP DATABASE Chemistry;
