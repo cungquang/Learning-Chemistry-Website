@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		{% block head %}
+		<link rel="stylesheet" href= "{{url_for('static', filename = 'style.css') }}">
+		<title>{% block title %}{% endblock %}</title>
+		{% endblock %}
+	</head>
+
+	<body>
+		<h1><strong>{% block header %}{% endblock %}</strong></h1>
+
+		<ul>{% block navigation %}{% endblock %}</ul>
+
+		<h1><strong>{%block header2 %}{% endblock %}</strong></h1>
+
+		<div id="content">{%block content %}{% endblock %} </div>
+		
+		<div id="footer">
+			{% block footer %}
+			&copy; Copyright 2021 by <a>Team Project 54</a>
+			{% endblock %}
+			
+	</body>
+</html>
