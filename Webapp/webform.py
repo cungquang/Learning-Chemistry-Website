@@ -11,12 +11,8 @@
 *																				*
 *	File Description:															*
 *		- This file contains form that will be used on html file				*
-*		- Each function represent a form:										*
-*			+ def home()														*
-*			+ def search()														*
-*			+ def forum()														*
-*			+ def practice()													*
-*		- Supplemen functions will not includes in this file 					*
+*		- Each function manages a form:											*
+*			+ CommentPost()														*
 *																				*
 *********************************************************************************
 """
