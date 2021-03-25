@@ -21,6 +21,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Length
 
+
+#-------------------------------CommentPost Form--------------------------------- 
 #CommentPost():
 # this function inherit from FlaskForm
 # Pre-condition: none
