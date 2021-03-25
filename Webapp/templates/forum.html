@@ -1,13 +1,32 @@
 {% extends "layout.html" %}
 
-{% block title %}Forum{% endblock %}
+{% block content %}
+	<div class="content-section">
+		<form method="POST" action="">
+			{{ form.hidden_tag() }}
+			<fieldset class="form-group">
+				<legend class="border-bottom mb-4">Discussions</legend>
+				<div class="form-group">
+					{{ form.postTitle.label(class="form-control-label") }}
+					{{ form.postTitle(class="form-control form-control-lg") }}
+				</div>
 
-{% block header %}Navigation{% endblock %}
+				<div class="form-group">
+					{{ form.postContent.label(class="form-control-label") }}
+					{{ form.postContent(class="form-control form-control-lg") }}
+				</div>				
+			</fieldset>
+			<div>
+				{{ form.post(class="btn btn-outline-info") }}	
 
-	{% block navigation %}
-		<li><a href="home">Home</a></li>
-		<li><a>Forum</a></li>
-		<li><a href="practice">Practice</a></li>
-	{% endblock %}
+			</div>
+		</form>
+	</div>
+{% endblock content %}
 
-{% block header2 %}Forum Content{% endblock %}
+{% block sideheader %}Question & Answer{% endblock sideheader %}
+
+{% block list %}
+    <li class="list-group-item list-group-item">Latest Posts</li>
+    <li class="list-group-item list-group-item"> Calender</li>
+{% endblock list %}
