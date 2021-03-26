@@ -19,13 +19,8 @@
 *********************************************************************************
 """
 
-<<<<<<< HEAD
 from flask import render_template, url_for, flash, redirect
 from flask_login import login_user, current_user, logout_user
-=======
-
-from flask import render_template, url_for, flash, redirect, request
->>>>>>> bfe5985f34d4bf78d52e8ad2aa0e1f11b1590a85
 from datetime import datetime
 from webapp.forms import CommentForm, SignupForm, SigninForm
 from webapp.datas import RegisterUser, Post, Discuss, ReplyComment
@@ -106,19 +101,6 @@ def forum():
 
 	#Send to the webpage
 	return render_template('forum.html', title='Forum')	
-
-
-#---------------------------------Search Route-----------------------------------
-# Search page
-@app.route('/search',methods = ["GET"]) 
-def search():
-	temp_data = registeruser.query.all()
-	return render_template('search.html',title = 'Search',temp_data = temp_data)
-
-
-
-
-
 """
 @app.route("/forum/new", methods=['GET','POST'])
 def new_post():
