@@ -20,7 +20,7 @@
 """
 
 
-from flask import render_template, url_for, flash, redirect
+from flask import render_template, url_for, flash, redirect, request
 from datetime import datetime
 from webapp.forms import CommentForm, SignupForm, SigninForm
 from webapp.datas import Post
@@ -66,6 +66,19 @@ def forum():
 
 	#Send to the webpage
 	return render_template('forum.html', title='Forum')	
+
+
+#---------------------------------Search Route-----------------------------------
+# Search page
+@app.route('/search',methods = ["GET"]) 
+def search():
+	temp_data = registeruser.query.all()
+	return render_template('search.html',title = 'Search',temp_data = temp_data)
+
+
+
+
+
 """
 @app.route("/forum/new", methods=['GET','POST'])
 def new_post():
