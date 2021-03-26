@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+	{% for quest in question %}
+		<article class="media content-section">
+			<div class="media-body">
+				<div class="article-metadata">
+					<a class="mr-2" href="#">{{ quest.author }}></a>
+					<small class="text-muted">{{ quest.date_posted}}</small>
+				</div>
+			</div>
+		</article>
+	{% endfor %}
+{% endblock content %}
+
+{% block sideheader %}Question & Answer{% endblock sideheader %}
+
+{% block list %}
+	<li class="list-group-item list-group-item">
+		<a class="nav-item nav-link mr-4" href="{{ url_for('home') }}">New Post</a>
+	</li>
+    <li class="list-group-item list-group-item">Latest Posts</li>
+    <li class="list-group-item list-group-item"> Calendar</li>
+{% endblock list %}

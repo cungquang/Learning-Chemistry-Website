@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block content %}
+	<div class="container">
+        <h1>This is all the search that are available</h1>
+        <br/><br/>
+
+        <h3>
+            The Basic Info for Calcium is:
+        </h3>
+        <h4>
+            {%for info in basic_info%}
+                {{info.CompoundName, info.ChemicalFormula, info.AtomicNumber, 
+                    info.State, info.MeltingPoint, info.BoilingPoint, info.Appearance, info.MolecularWeight}}
+            {% endfor %}
+        </h4>
+
+        <h3>
+            Some other combinations that includes Calcium are:
+        </h3>
+        <h4>
+            {%for combination in combinations%}
+                {{combination.ReactantFormula,combination.ProductFormula,combination.ChemicalEquation,combination.ReactionCondition}}
+                <br/>
+            {% endfor %}
+        </h4>
+        
+
+    </div>
+{% endblock content%}

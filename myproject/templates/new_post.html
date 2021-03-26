@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+	<div class="content-section">
+		<form method="POST" action="">
+			{{ form.hidden_tag() }}
+			<fieldset class="form-group">
+				<legend class="border-bottom mb-4">Discussions</legend>
+				<div class="form-group">
+					{{ form.postTitle.label(class="form-control-label") }}
+					{{ form.postTitle(class="form-control form-control-lg") }}
+				</div>
+
+				<div class="form-group">
+					{{ form.postContent.label(class="form-control-label") }}
+					{{ form.postContent(class="form-control form-control-lg") }}
+				</div>				
+			</fieldset>
+			<div>
+				{{ form.post(class="btn btn-outline-info") }}	
+
+			</div>
+		</form>
+	</div>
+{% endblock content}
