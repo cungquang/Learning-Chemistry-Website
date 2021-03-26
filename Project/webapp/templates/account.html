@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block content %}
+	<div class='content-section'>
+		<form method="POST" action="">	
+			{{ signup.hidden_tag() }}
+			<fieldset class="form-group">
+				<legend class="border-bottom mb-4">Sign Up</legend>
+				<!---fisrtName--->
+				<div class="form-group">
+					{{ signup.firstName.label(class="form-control-label") }}
+					{{ signup.firstName(class="form-control form-control-lg")}}
+				</div>
+				<!---lastName--->
+				<div class="form-group">
+					{{ signup.lastName.label(class="form-control-label") }}
+					{{ signup.lastName(class="form-control form-control-lg")}}
+				</div>
+				<!---email--->
+				<div class="form-group">
+					{{ signup.email.label(class="form-control-label") }}
+					{{ signup.email(class="form-control form-control-lg")}}
+				</div>
+				<!---password--->
+				<div class="form-group">
+					{{ signup.password.label(class="form-control-label") }}
+					{{ signup.password(class="form-control form-control-lg")}}
+				</div>
+				<!---confrimation--->
+				<div class="form-group">
+					{{ signup.confirmation.label(class="form-control-label") }}
+					{{ signup.confirmation(class="form-control form-control-lg")}}
+				</div>
+			</fieldset>
+			<div>
+				<!---Sign Up button--->
+				{{ signup.signup(class="btn btn-outline-info") }}
+			</div>
+		</form>
+	</div>
+	<div class="border-top pt-3">
+		<small class="text-muted">
+			Already Have An Account? Please Sign-in.
+		</small>
+		
+	</div>
+{% endblock content %}
+
+{% block list %}
+	<div class='content-section'>
+		<form method="POST" action="">	
+			{{ signin.hidden_tag() }}
+			<fieldset class="form-group">
+				<legend class="border-bottom mb-4">Sign In</legend>
+				<!---email--->
+				<div class="form-group">
+					{{ signin.email.label(class="form-control-label") }}
+					{{ signin.email(class="form-control form-control-lg")}}
+				</div>
+				<!---password--->
+				<div class="form-group">
+					{{ signin.password.label(class="form-control-label") }}
+					{{ signin.password(class="form-control form-control-lg")}}
+				</div>
+			</fieldset>
+			<div>
+				<!---Sign In button--->
+				{{ signin.signin(class="btn btn-outline-info") }}
+			</div>
+		</form>
+	</div>
+{% endblock list %}
+

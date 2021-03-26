@@ -20,21 +20,91 @@
 from webapp import db
 from datetime import datetime
 
+""" 
+Optional Instruction:
+	Overide table name - default name of the table is the class name
+	+ __tablename__ = "Discuss"			
+	
+	Other way to set multiple primary key:
+	+ __table_args__=(PrimaryKeyConstraint('PostID', 'UserID'),{})
+
+Other operation with database:
+	db.create_all() 							//create all the tables in database
+	db.session.add(tuple)						//add the new tuple to the database
+	db.session.commit()							//execute or actual add tuple from add() to database
+	<tableName>.querry.all()					//get all the querry from the <tablename> table
+	<tableName>.querry.filter_by(cond).first()	//return the first tuple in the table match the condition
+	<tableName>.querry.get(condition)			//return the tuple that match the condition
+""" 
+
+
+
+#-----------------------------RegisterUser Table----------------------------------- 
+class RegisterUser(db.Model):
+	__tablename__ = "registeruser"
+	UserID = db.Column(db.Integer, primary_key = True, nullable = False)
+	FirstName = db.Column(db.String(50), nullable = False)
+	LastName = db.Column(db.String(50), nullable = False)
+	Email = db.Column(db.String(100), nullable = False)
+	Password = db.Column(db.String(60), nullable = False)
+
+	#Setup foreign key: Discuss.UserID reference to RegisterUser.UserID
+	discuss = db.relationship('Discuss', backref='registeruser', lazy=True)
+	Post = db.relationship('Post', backref='registeruser', lazy=True)
+
+	def __repr__(self):
+		return f"RegisterUser('{self.UserID}','{self.FirstName}','{self.LastName}','{self.Email}','{self.Password}')"
+
+
 
 #--------------------------------Discuss Table------------------------------------- 
-#class Discuss(db.model)
+class Discuss(db.Model):
+	__tablename__ = "discuss"	
+	PostID = db.Column(db.Integer, db.ForeignKey('post.PostID'), primary_key = True, nullable = False)
+	UserID = db.Column(db.Integer, db.ForeignKey('registeruser.UserID'), primary_key = True, nullable = False)
+	
+	CreatorName = db.Column(db.String(200), nullable = False)
+
+	def __repr__(self):
+		return f"Discuss('{self.PostID}','{self.UserID}','{self.CreatorName}')"
+
 
 
 #----------------------------------Post Table-------------------------------------- 
 class Post(db.Model):
-	id = db.Column(db.Integer, primary_key = True, nullable = False)
-	author = db.Column(db.String(20), unique = True, nullable = False)
-	postTitle = db.Column(db.String(100), nullable = False)
-	postContent = db.Column(db.String(300))
-	datepost = db.Column(db.DateTime, nullable = False, default=datetime.utcnow)
+	__tablename__ = "post"
+	PostID = db.Column(db.Integer, primary_key = True, nullable = False)
+	AuthorID = db.Column(db.Integer, db.ForeignKey('registeruser.UserID'), nullable = False)
+	
+	PostTitle = db.Column(db.String(100), nullable = False)
+	PostContent = db.Column(db.String(300))
+	Datepost = db.Column(db.DateTime, nullable = False, default=datetime.utcnow)
+	
+	#Setup foreign key: Discuss.PosID reference to Post.PostID
+	Discuss = db.relationship('Discuss', backref='post')
+	Reply = db.relationship('ReplyComment', backref='post')
 
 	def __repr__(self):
-		return "Post('{self.id}',{self.author}','{self.postTitle}','{self.postContent}','{self.datepost}')"
+		return f"Post('{self.PostID}',{self.Author}','{self.PostTitle}','{self.PostContent}','{self.DatePost}')"
+
+
 
 #-------------------------------ReplyComment table-------------------------------- 
-#class ReplyComment(db.model)
+class ReplyComment(db.Model):
+	__tablename__ = "replycomment"
+	CommentID = db.Column(db.Integer, primary_key = True, nullable = False)
+	PostID = db.Column(db.Integer, db.ForeignKey('post.PostID'), primary_key = True, nullable = False)
+	
+	EditorName = db.Column(db.String(100), default = "Anonymous")
+	Content = db.Column(db.String(500), nullable = False)
+	CommentDate = db.Column(db.DateTime, nullable = False, default=datetime.utcnow)
+
+
+	def __repr__(self):
+		return f"ReplyComment('{self.CommentID}','{self.PostID}','{self.EditorName}','{self.Content}','{self.CommentDate}')"
+
+
+#----------------------------------Create table----------------------------------- 
+
+#Create all empty tables:
+db.create_all()

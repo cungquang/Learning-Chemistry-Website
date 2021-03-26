@@ -27,6 +27,8 @@
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav">
               <a class="nav-item nav-link mr-4" href="{{ url_for('home') }}"> Home </a>
+              <a class="nav-item nav-link mr-4" href="{{ url_for('account')}}"> Account </a>
+              
               <a class="nav-item nav-link mr-4" href="{{ url_for('practice') }}"> Practice </a>
               <a class="nav-item nav-link mr-4" href="{{ url_for('forum') }}"> Forum </a>
             </div>
@@ -48,9 +50,11 @@
               {% endfor %}
             {% endif %}
           {% endwith %}
+          
           {% block content %}{% endblock %}
         </div>
-        <div class="col-md-4">
+        <!---side header--->
+        <div class="col-md-offset-3">
           <div class="content-section">
             <h4>{% block sideheader %}{% endblock sideheader %}</h4>
             <p class='text-muted'>
@@ -60,8 +64,17 @@
             </p>
           </div>
         </div>
+
       </div>
     </main>
+
+    <footer>
+        <dir class="container-section">
+          <small>
+            &copy; Copyright 2021, by Canh Nhat Minh Le, Chris Liu, Frank Dong, Hong Quang Cung, Xixuan
+          </small>
+        </dir> 
+    </footer>
 
 
     <!-- Optional JavaScript -->

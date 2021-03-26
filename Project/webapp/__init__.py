@@ -32,8 +32,13 @@ app = Flask(__name__)
 #Configuration of the app:
 app.config['SECRET_KEY'] ='f619d6b3556fc0401cf31f077be67042'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-
 #Create database 
 db = SQLAlchemy(app)
+
+"""
+Code for running with MySQL server
+	app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://username:password@localhost/db_name'
+
+"""
 
 from webapp import routes
