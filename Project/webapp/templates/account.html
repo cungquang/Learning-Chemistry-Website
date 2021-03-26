@@ -6,30 +6,84 @@
 			{{ signup.hidden_tag() }}
 			<fieldset class="form-group">
 				<legend class="border-bottom mb-4">Sign Up</legend>
+
 				<!---fisrtName--->
 				<div class="form-group">
 					{{ signup.firstName.label(class="form-control-label") }}
-					{{ signup.firstName(class="form-control form-control-lg")}}
+					{% if signup.firstName.errors %}
+						{{ signup.firstName(class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in signup.firstName.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ signup.firstName(class="form-control form-control-lg")}}
+					{% endif %}
 				</div>
+
 				<!---lastName--->
 				<div class="form-group">
 					{{ signup.lastName.label(class="form-control-label") }}
-					{{ signup.lastName(class="form-control form-control-lg")}}
+
+					{% if signup.lastName.errors %}
+						{{ signup.lastName(class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in signup.firstName.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ signup.lastName(class="form-control form-control-lg")}}
+					{% endif %} 
 				</div>
+
 				<!---email--->
 				<div class="form-group">
 					{{ signup.email.label(class="form-control-label") }}
-					{{ signup.email(class="form-control form-control-lg")}}
+
+					{% if signup.email.errors %}
+						{{ signup.email(class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in signup.email.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ signup.email(class="form-control form-control-lg")}}
+					{% endif %}
 				</div>
+
 				<!---password--->
 				<div class="form-group">
 					{{ signup.password.label(class="form-control-label") }}
-					{{ signup.password(class="form-control form-control-lg")}}
+
+					{% if signup.password.errors %}
+						{{ signup.password(class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in signup.password.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ signup.password(class="form-control form-control-lg")}}
+					{% endif %}	
 				</div>
+
 				<!---confrimation--->
 				<div class="form-group">
 					{{ signup.confirmation.label(class="form-control-label") }}
-					{{ signup.confirmation(class="form-control form-control-lg")}}
+
+					{% if signup.confirmation.errors %}
+						{{ signup.confirmation(class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in signup.confirmation.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ signup.confirmation(class="form-control form-control-lg")}}
+					{% endif %}					
 				</div>
 			</fieldset>
 			<div>
@@ -52,15 +106,37 @@
 			{{ signin.hidden_tag() }}
 			<fieldset class="form-group">
 				<legend class="border-bottom mb-4">Sign In</legend>
+
 				<!---email--->
 				<div class="form-group">
 					{{ signin.email.label(class="form-control-label") }}
-					{{ signin.email(class="form-control form-control-lg")}}
+
+					{% if signin.email.errors %}
+						{{ signin.email(class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in signin.email.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ signin.email(class="form-control form-control-lg")}}
+					{% endif %}						
 				</div>
+				
 				<!---password--->
 				<div class="form-group">
 					{{ signin.password.label(class="form-control-label") }}
-					{{ signin.password(class="form-control form-control-lg")}}
+
+					{% if signin.password.errors %}
+						{{ signin.password(class="form-control form-control-lg is-invalid")}}
+						<div class="invalid-feedback">
+							{% for error in signin.password.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+					{% else %}
+						{{ signin.password(class="form-control form-control-lg")}}
+					{% endif %}	
 				</div>
 			</fieldset>
 			<div>

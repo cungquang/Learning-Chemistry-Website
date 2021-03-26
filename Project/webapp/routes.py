@@ -44,8 +44,11 @@ def account():
 		return redirect(url_for('home'))
 
 	if signin.validate_on_submit():
-		flash(f'Welcome', 'success')
-		return redirect(url_for('home'))
+		if signin.email.data == 'check@abc.com' and signin.password.data == '12345':
+			flash(f'Welcome', 'success')
+			return redirect(url_for('home'))
+		else:
+			flash(f'Login Unsuccessful. Please check username and password','danger')
 
 	return render_template('account.html', title="Account", signup=signup, signin=signin)
 
