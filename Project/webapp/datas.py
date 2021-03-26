@@ -17,7 +17,8 @@
 *********************************************************************************
 """
 
-from webapp import db
+from webapp import db, login_manager	
+from flask_login import UserMixin
 from datetime import datetime
 
 """ 
@@ -38,11 +39,18 @@ Other operation with database:
 """ 
 
 
-
 #-----------------------------RegisterUser Table----------------------------------- 
-class RegisterUser(db.Model):
+
+#load_user(user_id):
+#Pre-cond:
+#Post-cond:
+@login_manager.user_loader
+def load_user(user_id):
+	return RegisterUser.query.get(int(user_id))
+
+class RegisterUser(db.Model, UserMixin):
 	__tablename__ = "registeruser"
-	UserID = db.Column(db.Integer, primary_key = True, nullable = False)
+	id = db.Column(db.Integer, primary_key = True, nullable = False)
 	FirstName = db.Column(db.String(50), nullable = False)
 	LastName = db.Column(db.String(50), nullable = False)
 	Email = db.Column(db.String(100), nullable = False)
@@ -53,7 +61,7 @@ class RegisterUser(db.Model):
 	Post = db.relationship('Post', backref='registeruser', lazy=True)
 
 	def __repr__(self):
-		return f"RegisterUser('{self.UserID}','{self.FirstName}','{self.LastName}','{self.Email}','{self.Password}')"
+		return f"RegisterUser('{self.id}','{self.FirstName}','{self.LastName}','{self.Email}','{self.Password}')"
 
 
 
@@ -61,7 +69,7 @@ class RegisterUser(db.Model):
 class Discuss(db.Model):
 	__tablename__ = "discuss"	
 	PostID = db.Column(db.Integer, db.ForeignKey('post.PostID'), primary_key = True, nullable = False)
-	UserID = db.Column(db.Integer, db.ForeignKey('registeruser.UserID'), primary_key = True, nullable = False)
+	UserID = db.Column(db.Integer, db.ForeignKey('registeruser.id'), primary_key = True, nullable = False)
 	
 	CreatorName = db.Column(db.String(200), nullable = False)
 
@@ -74,7 +82,7 @@ class Discuss(db.Model):
 class Post(db.Model):
 	__tablename__ = "post"
 	PostID = db.Column(db.Integer, primary_key = True, nullable = False)
-	AuthorID = db.Column(db.Integer, db.ForeignKey('registeruser.UserID'), nullable = False)
+	AuthorID = db.Column(db.Integer, db.ForeignKey('registeruser.id'), nullable = False)
 	
 	PostTitle = db.Column(db.String(100), nullable = False)
 	PostContent = db.Column(db.String(300))

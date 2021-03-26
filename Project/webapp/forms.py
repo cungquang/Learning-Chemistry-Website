@@ -18,9 +18,9 @@
 """
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, TextAreaField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
-
+from wtforms import StringField, SubmitField, PasswordField, TextAreaField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from webapp.datas import RegisterUser, Post, Discuss, ReplyComment
 
 
 #-------------------------------Sign_up Form--------------------------------- 
@@ -50,6 +50,14 @@ class SignupForm(FlaskForm):
 	#variable to submit the post
 	signup = SubmitField('Sign Up')
 
+	#function to validate the email:
+	#Pre-cond: input the email 
+	#Post-cond: return email already in database Error Message if not pass validation test
+	def validate_email(self,email):
+		check_email = RegisterUser.query.filter_by(Email=email.data).first()
+		if check_email:
+			raise ValidationError('Email has been used.')
+
 
 
 #-------------------------------Sign_in Form--------------------------------- 
@@ -64,6 +72,9 @@ class SigninForm(FlaskForm):
 
 	#variable contain the password
 	password = PasswordField('Password', validators=[DataRequired()])
+
+	#variable contain the status of user
+	state = BooleanField('Remember')
 
 	#variable to submit the post
 	signin = SubmitField('Sign In')

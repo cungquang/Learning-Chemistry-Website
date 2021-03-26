@@ -19,14 +19,16 @@
 *********************************************************************************
 """
 
-
 from flask import render_template, url_for, flash, redirect
+from flask_login import login_user, current_user, logout_user
 from datetime import datetime
 from webapp.forms import CommentForm, SignupForm, SigninForm
-from webapp.datas import Post
-from webapp import app, db
+from webapp.datas import RegisterUser, Post, Discuss, ReplyComment
+from webapp import app, db, bcrypt
 
-#---------------------------------Home Route------------------------------------ 
+
+
+#---------------------------------Home Route----------------------------------	-- 
 @app.route('/')	
  
 #Home page
@@ -36,21 +38,51 @@ def home():
 
 @app.route('/account', methods=['GET','POST'])	
 def account():
+	if current_user.is_authenticated:
+		flash(f'Already login','success')
+		return redirect(url_for('home'))
 	signup = SignupForm()
-	signin = SigninForm()
-	
 	if signup.validate_on_submit():
+
+
+		#hash the provide password - using object class bcrypt
+		hash_password = bcrypt.generate_password_hash(signup.password.data).decode('utf-8')
+		
+		#use variable for temporary carry data
+		new_user = RegisterUser(FirstName=signup.firstName.data, LastName=signup.lastName.data,
+			Email=signup.email.data, Password=hash_password)
+		
+		#Add user's registration data into the database
+		db.session.add(new_user)
+		db.session.commit()
 		flash(f'Account create for {signup.firstName.data}!', 'success')
+
+		#Return user to the login
 		return redirect(url_for('home'))
 
+	signin = SigninForm()
 	if signin.validate_on_submit():
-		if signin.email.data == 'check@abc.com' and signin.password.data == '12345':
-			flash(f'Welcome', 'success')
+		user = RegisterUser.query.filter_by(Email=signin.email.data).first()
+
+		#success to login
+		if user and bcrypt.check_password_hash(user.Password, signin.password.data):
+			#log user in
+			login_user(user, remember=signin.state.data)
+			
+			#return user to home page
 			return redirect(url_for('home'))
+
+		#fail to login
 		else:
 			flash(f'Login Unsuccessful. Please check username and password','danger')
 
 	return render_template('account.html', title="Account", signup=signup, signin=signin)
+
+#Logout route
+@app.route('/logout')
+def logout():
+	logout_user()
+	return redirect(url_for('home'))
 
 
 #-------------------------------Practice Route---------------------------------- 

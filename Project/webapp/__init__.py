@@ -23,6 +23,8 @@
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
 
 #Decalre the variable app - main function
 app = Flask(__name__)
@@ -34,6 +36,8 @@ app.config['SECRET_KEY'] ='f619d6b3556fc0401cf31f077be67042'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 #Create database 
 db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
+login_manager =  LoginManager(app)
 
 """
 Code for running with MySQL server
