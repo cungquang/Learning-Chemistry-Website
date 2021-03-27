@@ -1,13 +1,19 @@
 {% extends "layout.html" %}
 
 {% block content %}
-	{% for quest in question %}
+	{% for quest in questions %}
 		<article class="media content-section">
 			<div class="media-body">
-				<div class="article-metadata">
-					<a class="mr-2" href="#">{{ quest.author }}></a>
-					<small class="text-muted">{{ quest.date_posted}}</small>
+				<div>
+					<h1>
+						<a class="article-title" href="{{ url_for('single_post',postid=quest.PostID) }}">{{ quest.PostTitle}}
+						</a>
+					</h1>
 				</div>
+				<small 	
+					class="text-muted"> {{ quest.registeruser.FirstName }}-{{ quest.DatePost.strftime('%Y-%m-%d') }}
+				</small>
+				<p class="article-content">{{ quest.PostContent}}</p>
 			</div>
 		</article>
 	{% endfor %}
@@ -17,8 +23,8 @@
 
 {% block list %}
 	<li class="list-group-item list-group-item">
-		<a class="nav-item nav-link mr-4" href="{{ url_for('home') }}">New Post</a>
+		<a class="list-group-item list-group-item" href="{{ url_for('new_post') }}">Add New Question</a>
 	</li>
-    <li class="list-group-item list-group-item">Latest Posts</li>
-    <li class="list-group-item list-group-item"> Calendar</li>
+    <li class="list-group-item list-group-item">Latest Post:</li>
+    <li class="list-group-item list-group-item">Number of Post:</li>
 {% endblock list %}

@@ -58,7 +58,7 @@ class RegisterUser(db.Model, UserMixin):
 
 	#Setup foreign key: Discuss.UserID reference to RegisterUser.UserID
 	discuss = db.relationship('Discuss', backref='registeruser', lazy=True)
-	Post = db.relationship('Post', backref='registeruser', lazy=True)
+	post = db.relationship('Post', backref='registeruser', lazy=True)
 
 	def __repr__(self):
 		return f"RegisterUser('{self.id}','{self.FirstName}','{self.LastName}','{self.Email}','{self.Password}')"
@@ -86,14 +86,14 @@ class Post(db.Model):
 	
 	PostTitle = db.Column(db.String(100), nullable = False)
 	PostContent = db.Column(db.String(300))
-	Datepost = db.Column(db.DateTime, nullable = False, default=datetime.utcnow)
+	DatePost = db.Column(db.DateTime, nullable = False, default=datetime.utcnow)
 	
 	#Setup foreign key: Discuss.PosID reference to Post.PostID
 	Discuss = db.relationship('Discuss', backref='post')
 	Reply = db.relationship('ReplyComment', backref='post')
 
 	def __repr__(self):
-		return f"Post('{self.PostID}',{self.Author}','{self.PostTitle}','{self.PostContent}','{self.DatePost}')"
+		return f"Post('{self.PostID}',{self.AuthorID}','{self.PostTitle}','{self.PostContent}','{self.DatePost}')"
 
 
 
@@ -104,7 +104,7 @@ class ReplyComment(db.Model):
 	PostID = db.Column(db.Integer, db.ForeignKey('post.PostID'), primary_key = True, nullable = False)
 	
 	EditorName = db.Column(db.String(100), default = "Anonymous")
-	Content = db.Column(db.String(500), nullable = False)
+	Content = db.Column(db.String(300), nullable = False)
 	CommentDate = db.Column(db.DateTime, nullable = False, default=datetime.utcnow)
 
 

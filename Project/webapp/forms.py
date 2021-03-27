@@ -89,12 +89,10 @@ class SigninForm(FlaskForm):
 class CommentForm(FlaskForm):
 
 	#variable contains the title of the post
-	postTitle = StringField('Post Title', validators=[DataRequired(), 
-		Length(min=1, max=100)])
+	postTitle = StringField('Post Title', validators=[DataRequired()])
 	
 	#variable contains the content of tohe post
-	postContent = TextAreaField('Post Content',validators=[DataRequired(), 
-		Length(min=1, max=500)])
+	postContent = TextAreaField('Post Content',validators=[DataRequired()])
 	
 	#variable to submit the post
 	post = SubmitField('Post')

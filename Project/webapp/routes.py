@@ -96,27 +96,33 @@ def practice():
 #Forum page 
 @app.route('/forum')
 def forum():
-	#Get all the post in the database
-	#question = Post.querry.all()
+	question = Post.query.all()
 
 	#Send to the webpage
-	return render_template('forum.html', title='Forum')	
-"""
-@app.route("/forum/new", methods=['GET','POST'])
-def new_post():
-	#Get current time and date
-	ctime = datetime.now().strftime("%d/%m/%y %H:%M:%S")
-	current = "Post time: " + ctime 
-	
-	#Get userinformation from database
+	return render_template('forum.html', title='Forum', questions=question)
 
+#New post option
+@app.route("/forum/new_post", methods=['GET','POST'])
+def new_post():
 	#Get data from Comment form
-	question = CommentForm()						#Collect user input for the post
-	if question.validate_on_submit():				#Validate user input base the assigned condition
-		post = Post(question.) 								#create post function
-		db.session.add(post)						
+	postform = CommentForm()					
+	
+	#Validate the post content
+	if postform.validate_on_submit():	
+
+		#add new post into database:
+		post = Post(registeruser=current_user,PostTitle=postform.postTitle.data,PostContent=postform.postContent.data)	
+		db.session.add(post)
 		db.session.commit()
-		flash(current, 'success')
-		return redirect(url_for(forum))
-	return render_template('new_post.html', title='Create', form = question)
-"""
+		flash(f'Create a new post on {datetime.utcnow()}')
+		return redirect(url_for('forum'))
+
+	return render_template('new_post.html', title='Create', postform=postform)
+
+#Route for each post
+@app.route("/post/<int:postid>")
+def single_post(postid):
+	
+	#get all infor of the post match condition
+	topic = Post.query.get_or_404(postid)
+	return render_template("single_post.html", title=topic.PostTitle, topic=topic)

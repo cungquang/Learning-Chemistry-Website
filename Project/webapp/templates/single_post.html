@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+		<article class="media content-section">
+			<div class="media-body">
+				<div>
+					<h1>
+						<a class="article-title" href="{{ url_for('single_post',postid=topic.PostID) }}">{{ topic.PostTitle}}
+						</a>
+					</h1>
+				</div>
+				<small 	
+					class="text-muted"> {{ topic.registeruser.FirstName }}-{{ topic.DatePost.strftime('%Y-%m-%d') }}
+				</small>
+				<p class="article-content">{{ topic.PostContent}}</p>
+			</div>
+		</article>
+{% endblock content %}
+
+{% block sideheader %}Reply & Comment{% endblock sideheader %}
+
+{% block list %}
+	<li class="list-group-item list-group-item">
+		<a class="list-group-item list-group-item" href="#">Add New Reply</a>
+	</li>
+    <li class="list-group-item list-group-item">Latest Reply:</li>
+    <li class="list-group-item list-group-item">Number of Reply:</li>
+{% endblock list %}
