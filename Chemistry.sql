@@ -47,6 +47,44 @@ INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, Melting
 	VALUES("Hydrogen Hydroxide", "H2O", NULL, "Liquid", 0, 99.98, "White crystalline solid, almost colorless liquid with a hint of blue, colorless gas", "18.015u");
 INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
 	VALUES("Calcium Oxide", "CaO", NULL, "Solid", 2613, 2850, "White to pale yellow/brown powder", "56.077u");
+
+INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
+	VALUES("Iron", "Fe", 26, "Solid", 1538, 2862, "lustrous metallic with a grayish tinge", "55.845u"),
+    ("Sulfuric acid", "H2SO4", NULL, "Liquid", 10.31, 337, "Clear, colorless liquid", "98.079u"),
+    ("Iron(III) sulfate", "Fe2(SO4)3", NULL, "Solid", 480, 175, "grayish-white crystals", "399.88u"),
+    ("Ethane", "C2H6", NULL, "Gas", -182.8, -88.5, "Colorless gas", "30.070u"),
+    ("Potassium hydroxide", "KOH", NULL, "Solid", 360, 1327, "white solid, deliquescent", "56.11u"),
+    ("Phosphoric acid", "H3PO4", NULL, "Liquid", 40, 212, "colorless syrup", "97.994u"),
+    ("Tripotassium phosphate", "K3PO4", NULL, "Solid", 1380, NULL, "White deliquescent powder", "212.27u"),
+    ("Tin(IV) oxide", "SnO2", NULL, "Solid", 1630, 1800, "Yellowish or light grey powder", "150.708u"),
+    ("Tin", "Sn", 50, "Solid", 231.93, 2602, "silvery-white (beta, β) or gray (alpha, α)", "118.71u"),
+    ("Ammonia", "NH3", NULL, "Gas", -77.73, -33.34, "Colourless gas", "17.031u"),
+    ("Nitric oxide", "NO", NULL, "Gas", -164, -152, "Colourless gas", "30.006u"),
+    ("Potassium nitrate", "KNO3", NULL, "Solid", 334, 400, "white solid", "101.103u"),
+    ("Carbonic acid", "H2CO3", NULL, "Liquid", NULL, NULL, "Colourless aqueous solution", "63.03u"),
+    ("Potassium carbonate", "K2CO3", NULL, "Solid", 891, NULL, "White, hygroscopic solid", "138.205u"),
+    ("Nitric acid", "HNO3", NULL, "Liquid", -42, 83, "Colorless, yellow or red fuming liquid", "63.012u"),
+    ("Methane", "CH4", NULL, "Gas", -182.456, -161.5, "Colorless gas", "16.043u"),
+    ("Sodium", "Na", 11, "Solid", 97.794, 882.940, "silvery white metallic", "23.000u"),
+    ("Chlorine", "Cl", 17, "Gas", -101.5, -34.04, "pale yellow-green gas", "35.453u"),
+    ("Sodium chloride", "NaCl", NULL, "Solid", 800.7, 1465, "Colorless cubic crystals", "58.443u"),
+    ("Aluminium", "Al", 13, "Solid", 660.32, 2470, "silvery gray metallic", "26.982u"),
+    ("Aluminium oxide", "Al2O3", NULL, "Solid", 2072, 2977, "white solid", "101.960u"),
+    ("Nitrogen", "N2", 7, NULL, -209.86, -195.795, "colorless gas, liquid or solid", "14.007u"),
+    ("Lead(IV) hydroxide", "Pb(OH)4", NULL, NULL,NULL, NULL, NULL, "275.23u"),
+    ("Lead(II) sulfate", "Pb(SO4)2", NULL, "Solid",1087, NULL, "white solid", "303.26u"),
+    ("Hydrogen chloride", "HCl", NULL, "Gas",-114.22, -85.05, "Colorless gas", "36.46u"),
+    ("Aluminium chloride", "AlCl3", NULL, "Solid",180, NULL, "white or pale yellow solid, hygroscopic", "133.341u"),
+    ("Arsenic", "As", 33, "Solid",NULL, NULL, "metallic grey", "74.922u"),
+    ("Sodium hydroxide", "NaOH", NULL, "Solid",323, 1388, "White, waxy, opaque crystals", "39.997u"),
+    ("Sodium arsenite", "Na3AsO3", NULL, "Solid",550, NULL, "white or grayish powder, hygroscopic", "129.91u"),
+    ("Mercury(II) hydroxide", "HgOH2", NULL, NULL, NULL, NULL, NULL, "234.605u"),
+    ("Zine", "Zn", 30, 'Solid', 419.53, 907, "silver-gray", "65.38u"),
+    ("Zinc chloride", "ZnCl2", NULL, 'Solid', 290, 732, "white crystalline solid, hygroscopic and very deliquescent", "136.315u");
+    
+-- TODO: ADD O2 and H2
+
+SELECT * FROM Compound;
     
 CREATE TABLE IF NOT EXISTS Produces(
 	ReactantFormula VARCHAR(30) NOT NULL,
@@ -57,6 +95,7 @@ CREATE TABLE IF NOT EXISTS Produces(
     FOREIGN KEY(ReactantFormula) REFERENCES Compound(ChemicalFormula) ON DELETE CASCADE,
     FOREIGN KEY(ProductFormula) REFERENCES Compound(ChemicalFormula) ON DELETE CASCADE
 );
+
 INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
 	VALUES((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium oxide"), "2Ca + O2 -> 2CaO", NULL); 
 INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
@@ -69,6 +108,39 @@ INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,Reaction
 	VALUES((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Carbonate"), "CaO + CO2 -> CaCO3", NULL); 
 INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
 	VALUES((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Carbon Dioxide"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Carbonate"), "CaO + CO2 -> CaCO3", NULL); 
+
+INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
+	VALUES("Fe","Fe2(SO4)3", "2Fe + 3H2SO4 -> Fe2(SO4)3 + 3H2", NULL),
+    ("H2SO4", "Fe2(SO4)3", "2Fe + 3H2SO4 -> Fe2(SO4)3 + 3H2", NULL),
+    ("C2H6", "H2O", "2C2H6 + 7O2 -> 6H2O + 4CO2", NULL),
+    ("O2", "H2O", "2C2H6 + 7O2 -> 6H2O + 4CO2", NULL),
+    ("KOH", "K3PO4", "3KOH + H3PO4 -> K3PO4 + 3H2O", NULL),
+    ("H3PO4", "K3PO4", "3KOH + H3PO4 -> K3PO4 + 3H2O", NULL),
+    ("SnO2", "Sn", "SnO2 + 2H2 -> Sn + 2H2O", NULL),
+    ("H2","Sn", "SnO2 + 2H2 -> Sn + 2H2O", NULL),
+    ("NH3","NO", "4NH3 + 5O2 -> 4NO + 6H2O", NULL),
+    ("O2","NO", "4NH3 + 5O2 -> 4NO + 6H2O", NULL),
+    ("KNO3","K2CO3", "2KNO3 + H2CO3 -> K2CO3 + 2HNO3", NULL),
+    ("H2CO3","K2CO3", "2KNO3 + H2CO3 -> K2CO3 + 2HNO3", NULL),
+    ("CH4","CO2", "CH4 + 2O2 -> CO2 + 2H2O", NULL),
+    ("O2","CO2", "CH4 + 2O2 -> CO2 + 2H2O", NULL),
+    ("Na","NaCl", "2Na + 2Cl -> NaCl", NULL),
+    ("Cl","NaCl", "2Na + 2Cl -> NaCl", NULL),
+    ("Al","Al2CO3", "4Al + 3O2 -> 2Al2O3", NULL),
+    ("O2","Al2CO3", "4Al + 3O2 -> 2Al2O3", NULL),
+    ("N2","NH3", "N2 + 3H2 -> 2NH3", NULL),
+    ("H2","NH3", "N2 + 3H2 -> 2NH3", NULL),
+    ("H2SO4","Pb(SO4)2", "2H2SO4 + Pb(OH)4 -> Pb(SO4)2 + 4H2O", NULL),
+    ("Pb(OH)4","Pb(SO4)2", "2H2SO4 + Pb(OH)4 -> Pb(SO4)2 + 4H2O", NULL),
+    ("Al","AlCl3", "2Al + 6HCl -> 2AlCl3 + 3H2", NULL),
+    ("HCl","AlCl3", "2Al + 6HCl -> 2AlCl3 + 3H2", NULL),
+    ("H3PO4","PCl5", "H3PO4 + 5HCl -> PCl5 + 4H2O", NULL),
+    ("HCl","PCl5", "H3PO4 + 5HCl -> PCl5 + 4H2O", NULL),
+    ("As","Na3AsO3", "2As + 6NaOH -> 2Na3AsO3 + 3H2", NULL),
+    ("NaOH","Na3AsO3", "2As + 6NaOH -> 2Na3AsO3 + 3H2", NULL),
+    ("Zn","ZnCl2", "Zn + 2HCl -> ZnCl2 + H2", NULL),
+    ("HCl","ZnCl2", "Zn + 2HCl -> ZnCl2 + H2", NULL);
+    
 
 
 
