@@ -38,9 +38,9 @@ INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, Melting
 INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
 	VALUES("Carbon Dioxide", "CO2", NULL, NULL, -56.6, NULL, "Colorless gas", "44.009u");
 INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
-	VALUES("Hydrogen", "H", 1, "Gas", -259.16, -252.879, "Colorless gas", "1.008u");
+	VALUES("Hydrogen", "H2", 1, "Gas", -259.16, -252.879, "Colorless gas", "1.008u");
 INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
-	VALUES("Oxygen", "O", 8, NULL, -218.79, -182.96, "Colorless gas", "15.999u");
+	VALUES("Oxygen", "O2", 8, NULL, -218.79, -182.96, "Colorless gas", "15.999u");
 INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight)
 	VALUES("Calcium Carbonate", "CaCO3", NULL, "Solid", 1339, NULL, "Fine white powder; chalky taste", "100.09u");
 INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
@@ -49,7 +49,7 @@ INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, Melting
 	VALUES("Calcium Oxide", "CaO", NULL, "Solid", 2613, 2850, "White to pale yellow/brown powder", "56.077u");
 
 INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, MeltingPoint, BoilingPoint, Appearance, MolecularWeight) 
-	VALUES("Iron", "Fe", 26, "Solid", 1538, 2862, "lustrous metallic with a grayish tinge", "55.845u"),
+    VALUES("Iron", "Fe", 26, "Solid", 1538, 2862, "lustrous metallic with a grayish tinge", "55.845u"),
     ("Sulfuric acid", "H2SO4", NULL, "Liquid", 10.31, 337, "Clear, colorless liquid", "98.079u"),
     ("Iron(III) sulfate", "Fe2(SO4)3", NULL, "Solid", 480, 175, "grayish-white crystals", "399.88u"),
     ("Ethane", "C2H6", NULL, "Gas", -182.8, -88.5, "Colorless gas", "30.070u"),
@@ -69,7 +69,7 @@ INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, Melting
     ("Chlorine", "Cl", 17, "Gas", -101.5, -34.04, "pale yellow-green gas", "35.453u"),
     ("Sodium chloride", "NaCl", NULL, "Solid", 800.7, 1465, "Colorless cubic crystals", "58.443u"),
     ("Aluminium", "Al", 13, "Solid", 660.32, 2470, "silvery gray metallic", "26.982u"),
-    ("Aluminium oxide", "Al2O3", NULL, "Solid", 2072, 2977, "white solid", "101.960u"),
+    ("Aluminium oxide", "Al2CO3", NULL, "Solid", 2072, 2977, "white solid", "101.960u"),
     ("Nitrogen", "N2", 7, NULL, -209.86, -195.795, "colorless gas, liquid or solid", "14.007u"),
     ("Lead(IV) hydroxide", "Pb(OH)4", NULL, NULL,NULL, NULL, NULL, "275.23u"),
     ("Lead(II) sulfate", "Pb(SO4)2", NULL, "Solid",1087, NULL, "white solid", "303.26u"),
@@ -80,9 +80,17 @@ INSERT INTO Compound(CompoundName, ChemicalFormula, AtomicNumber, State, Melting
     ("Sodium arsenite", "Na3AsO3", NULL, "Solid",550, NULL, "white or grayish powder, hygroscopic", "129.91u"),
     ("Mercury(II) hydroxide", "HgOH2", NULL, NULL, NULL, NULL, NULL, "234.605u"),
     ("Zine", "Zn", 30, 'Solid', 419.53, 907, "silver-gray", "65.38u"),
-    ("Zinc chloride", "ZnCl2", NULL, 'Solid', 290, 732, "white crystalline solid, hygroscopic and very deliquescent", "136.315u");
+    ("Zinc chloride", "ZnCl2", NULL, 'Solid', 290, 732, "white crystalline solid, hygroscopic and very deliquescent", "136.315u"),
+    ("Phosphorus pentachloride", "PCl5", NULL, 'Solid', 160.5, 166.8, "colourless crystals", "208.22u"),
+    ("Tricalcium phosphate", "Ca3(PO4)2", NULL, 'Solid', 1391.5, NULL, "White amorphous powder", "310.18u"),
+    ("Calcium sulfate", "CaSO4", NULL, 'Solid', 1460, NULL, " white solid", "136.14u"),
+    ("Monocalcium phosphate", "Ca(H2PO4)2", NULL, 'Solid', 109, 203, " White powder", "234.05u"),
+    ("Gold(III) sulfide", "Au2S3", NULL, 'Solid', NULL, NULL, " Black powder", "490.1u"),
+    ("Gold", "Au", 79, 'Solid', 1064.18, 2970, "metallic yellow", "196.967u"),
+    ("Hydrogen sulfide", "H2S", NULL, 'Gas', -82, -60, "Colorless gas", "34.08u"),
+    ("Ammonium nitrate", "NH4NO3", NULL, NULL, 169.6, NULL, "Colorless", "80.043u");
     
--- TODO: ADD O2 and H2
+
 
 SELECT * FROM Compound;
     
@@ -112,22 +120,24 @@ INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,Reaction
 INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
 	VALUES("Fe","Fe2(SO4)3", "2Fe + 3H2SO4 -> Fe2(SO4)3 + 3H2", NULL),
     ("H2SO4", "Fe2(SO4)3", "2Fe + 3H2SO4 -> Fe2(SO4)3 + 3H2", NULL),
-    ("C2H6", "H2O", "2C2H6 + 7O2 -> 6H2O + 4CO2", NULL),
-    ("O2", "H2O", "2C2H6 + 7O2 -> 6H2O + 4CO2", NULL),
+    ("C2H6", "CO2", "2C2H6 + 7O2 -> 6H2O + 4CO2", NULL),
+    ("O2", "CO2", "2C2H6 + 7O2 -> 6H2O + 4CO2", NULL),
     ("KOH", "K3PO4", "3KOH + H3PO4 -> K3PO4 + 3H2O", NULL),
     ("H3PO4", "K3PO4", "3KOH + H3PO4 -> K3PO4 + 3H2O", NULL),
     ("SnO2", "Sn", "SnO2 + 2H2 -> Sn + 2H2O", NULL),
     ("H2","Sn", "SnO2 + 2H2 -> Sn + 2H2O", NULL),
+    ("SnO2", "H2O", "SnO2 + 2H2 -> Sn + 2H2O", NULL),
     ("NH3","NO", "4NH3 + 5O2 -> 4NO + 6H2O", NULL),
     ("O2","NO", "4NH3 + 5O2 -> 4NO + 6H2O", NULL),
     ("KNO3","K2CO3", "2KNO3 + H2CO3 -> K2CO3 + 2HNO3", NULL),
     ("H2CO3","K2CO3", "2KNO3 + H2CO3 -> K2CO3 + 2HNO3", NULL),
+    ("KNO3","HNO3", "2KNO3 + H2CO3 -> K2CO3 + 2HNO3", NULL),
+    ("H2CO3","HNO3", "2KNO3 + H2CO3 -> K2CO3 + 2HNO3", NULL),
     ("CH4","CO2", "CH4 + 2O2 -> CO2 + 2H2O", NULL),
-    ("O2","CO2", "CH4 + 2O2 -> CO2 + 2H2O", NULL),
     ("Na","NaCl", "2Na + 2Cl -> NaCl", NULL),
     ("Cl","NaCl", "2Na + 2Cl -> NaCl", NULL),
-    ("Al","Al2CO3", "4Al + 3O2 -> 2Al2O3", NULL),
-    ("O2","Al2CO3", "4Al + 3O2 -> 2Al2O3", NULL),
+    ("Al","Al2CO3", "4Al + 3O2 -> 2Al2CO3", NULL),
+    ("O2","Al2CO3", "4Al + 3O2 -> 2Al2CO3", NULL),
     ("N2","NH3", "N2 + 3H2 -> 2NH3", NULL),
     ("H2","NH3", "N2 + 3H2 -> 2NH3", NULL),
     ("H2SO4","Pb(SO4)2", "2H2SO4 + Pb(OH)4 -> Pb(SO4)2 + 4H2O", NULL),
@@ -138,11 +148,23 @@ INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,Reaction
     ("HCl","PCl5", "H3PO4 + 5HCl -> PCl5 + 4H2O", NULL),
     ("As","Na3AsO3", "2As + 6NaOH -> 2Na3AsO3 + 3H2", NULL),
     ("NaOH","Na3AsO3", "2As + 6NaOH -> 2Na3AsO3 + 3H2", NULL),
-    ("Zn","ZnCl2", "Zn + 2HCl -> ZnCl2 + H2", NULL),
-    ("HCl","ZnCl2", "Zn + 2HCl -> ZnCl2 + H2", NULL);
-    
+    ("Zn","ZnCl2", "Zn + 2HCl -> ZnCl2 + H2", NULL);
+INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
+    VALUES("HCl","ZnCl2", "Zn + 2HCl -> ZnCl2 + H2", NULL),
+    ("Ca3(PO4)2","CaSO4", "Ca3(PO4)2 + 2H2SO4 -> 2CaSO4 + Ca(H2PO4)2", NULL),
+    ("H2SO4","CaSO4", "Ca3(PO4)2 + 2H2SO4 -> 2CaSO4 + Ca(H2PO4)2", NULL),
+    ("Ca3(PO4)2","Ca(H2PO4)2", "Ca3(PO4)2 + 2H2SO4 -> 2CaSO4 + Ca(H2PO4)2", NULL),
+    ("H2SO4","Ca(H2PO4)2", "Ca3(PO4)2 + 2H2SO4 -> 2CaSO4 + Ca(H2PO4)2", NULL),
+    ("Au2S3","Au", "Au2S3 + 3H2 -> 2Au + 3H2S", NULL),
+    ("H2","Au", "Au2S3 + 3H2 -> 2Au + 3H2S", NULL),
+    ("Au2S3","H2S", "Au2S3 + 3H2 -> 2Au + 3H2S", NULL);
+INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
+    VALUES("H2","H2S", "Au2S3 + 3H2 -> 2Au + 3H2S", NULL),
+    ("NH4NO3","N2", "2NH4NO3 -> 2N2 + O2 + 4H2O", NULL),
+    ("NH4NO3","O2", "2NH4NO3 -> 2N2 + O2 + 4H2O", NULL),
+    ("NH4NO3","H2O", "2NH4NO3 -> 2N2 + O2 + 4H2O", NULL);
 
-
+SELECT * FROM PRODUCES;
 
 CREATE TABLE IF NOT EXISTS Search (
 	CompoundFormula VARCHAR(30) NOT NULL,
