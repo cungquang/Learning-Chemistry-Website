@@ -7,6 +7,9 @@ from datetime import datetime
 from flask import render_template, url_for, flash, redirect
 from flask_login import login_user, current_user, logout_user
 from datetime import datetime
+from flask import jsonify
+from flask import request
+import json
 
 
 #Decalre the variable app - main function
@@ -142,7 +145,6 @@ class Produces(db.Model):
     ProductFormula = db.Column(db.String(30), db.ForeignKey('compound.ChemicalFormula'), primary_key = True, nullable = False)
     ChemicalEquation = db.Column(db.String(100), nullable = False)
     ReactionCondition = db.Column(db.String(100))
-    
     #Setup foreign key: Products.ReactantFormula references Compound.ChemicalFormula
     #                   Products.ProductFormula references Compound.ChemicalFormula
 
@@ -268,11 +270,68 @@ def forum():
 #--------------------------------Search Route------------------------------------
 @app.route('/search')
 def search():
-    basic_info = Compound.query.filter_by(CompoundName = 'Calcium')
-    combinations = Produces.query.filter_by(ReactantFormula = 'Ca')
-    return render_template('search.html', title='Search',basic_info = basic_info, combinations = combinations)
+    all_compounds = Compound.query.all()
+    compound_headers = ["CompoundName","ChemicalFormula","AtomicNumber","State","MeltingPoint","BoilingPoint","Appearance","MolecularWeight"]
+    compound_dict = {}
+    for i, row in enumerate(all_compounds):
+        index = 0
+        compound_dict[i] = {compound_headers[index]: row.CompoundName, compound_headers[index+1]: row.ChemicalFormula, compound_headers[index+2]: row.AtomicNumber, compound_headers[index+3]: row.State, compound_headers[index+4]: row.MeltingPoint, compound_headers[index+5]: row.Appearance, compound_headers[index+6]: row.MolecularWeight}
+    keys_values = compound_dict.items()
+    compound_json = {str(key): value for key, value in keys_values}
+    return render_template('search.html', title='Search', all_compounds = compound_json)
+
+def replace_none(test_dict):
+    # checking for dictionary and replacing if None
+    if isinstance(test_dict, dict):
+        for key in test_dict:
+            if test_dict[key] is None:
+                test_dict[key] = {}
+            else:
+                replace_none(test_dict[key])
+    # checking for list, and testing for each value
+    elif isinstance(test_dict, list):
+        for val in test_dict:
+            replace_none(val)
 
 
+@app.route("/compoundinfo",methods=["POST","GET"])
+def compoundinfo():
+    searchbox = request.form.get("text")
+    print(searchbox)
+    compounds = Compound.query.all()
+    compound = Compound()
+    for row in compounds:
+        if row.ChemicalFormula == searchbox:
+            compound = row
+    print(compound)
+    compound_headers = ["CompoundName","ChemicalFormula","AtomicNumber","State","MeltingPoint","BoilingPoint","Appearance","MolecularWeight"]
+    compound_dict = {}
+    index = 0
+    compound_dict[index] = {compound_headers[index]: compound.CompoundName, compound_headers[index+1]: compound.ChemicalFormula, compound_headers[index+2]: compound.AtomicNumber, compound_headers[index+3]: compound.State, compound_headers[index+4]: compound.MeltingPoint, compound_headers[index+5]: compound.Appearance, compound_headers[index+6]: compound.MolecularWeight}
+    keys_values = compound_dict.items()
+    compound_json = {str(key): value for key, value in keys_values}
+    replace_none(compound_json)
+    print(compound_json)
+    return jsonify(compound_json)
+
+
+@app.route("/livesearch",methods=["POST","GET"])
+def livesearch():
+    searchbox = request.form.get("text")
+    produces = Produces.query.all()
+    produce = Produces()
+    for row in produces:
+        if row.ReactantFormula == searchbox or row.ProductFormula == searchbox:
+            produce = row
+    produce_headers = ["ReactantFormula", "ProductFormula", "ChemicalEquation", "ReactionCondition"]
+    produce_dict = {}
+    index = 0
+    produce_dict[index] = {produce_headers[index]: produce.ReactantFormula, produce_headers[index+1]: produce.ProductFormula, produce_headers[index+2]: produce.ChemicalEquation, produce_headers[index+3]: produce.ReactionCondition}
+    keys_values = produce_dict.items()
+    produce_json = {str(key): value for key, value in keys_values}
+    replace_none(produce_json)
+    return jsonify(produce_json)
+    
 if __name__ == '__main__':
     app.run(debug = True)
 
