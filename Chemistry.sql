@@ -104,65 +104,61 @@ CREATE TABLE IF NOT EXISTS Produces(
     FOREIGN KEY(ProductFormula) REFERENCES Compound(ChemicalFormula) ON DELETE CASCADE
 );
 
-INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
-	VALUES((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium oxide"), "2Ca + O2 -> 2CaO", NULL); 
-INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
-	VALUES((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Oxygen"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium oxide"), "2Ca + O2 -> 2CaO", NULL); 
-INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
-	VALUES((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Hydrogen"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Hydrogen Hydroxide"), "2H2 + O2 -> 2H2O", NULL); 
-INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
-	VALUES((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Oxygen"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Hydrogen Hydroxide"), "2H2 + O2 -> 2H2O", NULL); 
-INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
-	VALUES((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Carbonate"), "CaO + CO2 -> CaCO3", NULL); 
-INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
-	VALUES((SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Carbon Dioxide"),(SELECT ChemicalFormula FROM Compound WHERE CompoundName = "Calcium Carbonate"), "CaO + CO2 -> CaCO3", NULL); 
+INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation)
+	VALUES("Ca","CaO", "2Ca + O2 -> 2CaO"),
+    ("O2", "CaO", "2Ca + O2 -> 2CaO"),
+    ("H2", "H2O", "2H2 + O2 -> 2H2O"),
+    ("O2", "H2O", "2H2 + O2 -> 2H2O"),
+    ("CaO", "CaCO3", "CaO + CO2 -> CaCO3"),
+    ("CO2", "CaCO3", "CaO + CO2 -> CaCO3"),
 
-INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
-	VALUES("Fe","Fe2(SO4)3", "2Fe + 3H2SO4 -> Fe2(SO4)3 + 3H2", NULL),
-    ("H2SO4", "Fe2(SO4)3", "2Fe + 3H2SO4 -> Fe2(SO4)3 + 3H2", NULL),
-    ("C2H6", "CO2", "2C2H6 + 7O2 -> 6H2O + 4CO2", NULL),
-    ("O2", "CO2", "2C2H6 + 7O2 -> 6H2O + 4CO2", NULL),
-    ("KOH", "K3PO4", "3KOH + H3PO4 -> K3PO4 + 3H2O", NULL),
-    ("H3PO4", "K3PO4", "3KOH + H3PO4 -> K3PO4 + 3H2O", NULL),
-    ("SnO2", "Sn", "SnO2 + 2H2 -> Sn + 2H2O", NULL),
-    ("H2","Sn", "SnO2 + 2H2 -> Sn + 2H2O", NULL),
-    ("SnO2", "H2O", "SnO2 + 2H2 -> Sn + 2H2O", NULL),
-    ("NH3","NO", "4NH3 + 5O2 -> 4NO + 6H2O", NULL),
-    ("O2","NO", "4NH3 + 5O2 -> 4NO + 6H2O", NULL),
-    ("KNO3","K2CO3", "2KNO3 + H2CO3 -> K2CO3 + 2HNO3", NULL),
-    ("H2CO3","K2CO3", "2KNO3 + H2CO3 -> K2CO3 + 2HNO3", NULL),
-    ("KNO3","HNO3", "2KNO3 + H2CO3 -> K2CO3 + 2HNO3", NULL),
-    ("H2CO3","HNO3", "2KNO3 + H2CO3 -> K2CO3 + 2HNO3", NULL),
-    ("CH4","CO2", "CH4 + 2O2 -> CO2 + 2H2O", NULL),
-    ("Na","NaCl", "2Na + 2Cl -> NaCl", NULL),
-    ("Cl","NaCl", "2Na + 2Cl -> NaCl", NULL),
-    ("Al","Al2CO3", "4Al + 3O2 -> 2Al2CO3", NULL),
-    ("O2","Al2CO3", "4Al + 3O2 -> 2Al2CO3", NULL),
-    ("N2","NH3", "N2 + 3H2 -> 2NH3", NULL),
-    ("H2","NH3", "N2 + 3H2 -> 2NH3", NULL),
-    ("H2SO4","Pb(SO4)2", "2H2SO4 + Pb(OH)4 -> Pb(SO4)2 + 4H2O", NULL),
-    ("Pb(OH)4","Pb(SO4)2", "2H2SO4 + Pb(OH)4 -> Pb(SO4)2 + 4H2O", NULL),
-    ("Al","AlCl3", "2Al + 6HCl -> 2AlCl3 + 3H2", NULL),
-    ("HCl","AlCl3", "2Al + 6HCl -> 2AlCl3 + 3H2", NULL),
-    ("H3PO4","PCl5", "H3PO4 + 5HCl -> PCl5 + 4H2O", NULL),
-    ("HCl","PCl5", "H3PO4 + 5HCl -> PCl5 + 4H2O", NULL),
-    ("As","Na3AsO3", "2As + 6NaOH -> 2Na3AsO3 + 3H2", NULL),
-    ("NaOH","Na3AsO3", "2As + 6NaOH -> 2Na3AsO3 + 3H2", NULL),
-    ("Zn","ZnCl2", "Zn + 2HCl -> ZnCl2 + H2", NULL);
-INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
-    VALUES("HCl","ZnCl2", "Zn + 2HCl -> ZnCl2 + H2", NULL),
-    ("Ca3(PO4)2","CaSO4", "Ca3(PO4)2 + 2H2SO4 -> 2CaSO4 + Ca(H2PO4)2", NULL),
-    ("H2SO4","CaSO4", "Ca3(PO4)2 + 2H2SO4 -> 2CaSO4 + Ca(H2PO4)2", NULL),
-    ("Ca3(PO4)2","Ca(H2PO4)2", "Ca3(PO4)2 + 2H2SO4 -> 2CaSO4 + Ca(H2PO4)2", NULL),
-    ("H2SO4","Ca(H2PO4)2", "Ca3(PO4)2 + 2H2SO4 -> 2CaSO4 + Ca(H2PO4)2", NULL),
-    ("Au2S3","Au", "Au2S3 + 3H2 -> 2Au + 3H2S", NULL),
-    ("H2","Au", "Au2S3 + 3H2 -> 2Au + 3H2S", NULL),
-    ("Au2S3","H2S", "Au2S3 + 3H2 -> 2Au + 3H2S", NULL);
-INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation,ReactionCondition)
-    VALUES("H2","H2S", "Au2S3 + 3H2 -> 2Au + 3H2S", NULL),
-    ("NH4NO3","N2", "2NH4NO3 -> 2N2 + O2 + 4H2O", NULL),
-    ("NH4NO3","O2", "2NH4NO3 -> 2N2 + O2 + 4H2O", NULL),
-    ("NH4NO3","H2O", "2NH4NO3 -> 2N2 + O2 + 4H2O", NULL);
+
+INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation)
+	VALUES("Fe","Fe2(SO4)3", "2Fe + 3H2SO4 -> Fe2(SO4)3 + 3H2"),
+    ("H2SO4", "Fe2(SO4)3", "2Fe + 3H2SO4 -> Fe2(SO4)3 + 3H2"),
+    ("C2H6", "CO2", "2C2H6 + 7O2 -> 6H2O + 4CO2"),
+    ("O2", "CO2", "2C2H6 + 7O2 -> 6H2O + 4CO2"),
+    ("KOH", "K3PO4", "3KOH + H3PO4 -> K3PO4 + 3H2O"),
+    ("H3PO4", "K3PO4", "3KOH + H3PO4 -> K3PO4 + 3H2O"),
+    ("SnO2", "Sn", "SnO2 + 2H2 -> Sn + 2H2O"),
+    ("H2","Sn", "SnO2 + 2H2 -> Sn + 2H2O"),
+    ("SnO2", "H2O", "SnO2 + 2H2 -> Sn + 2H2O"),
+    ("NH3","NO", "4NH3 + 5O2 -> 4NO + 6H2O"),
+    ("O2","NO", "4NH3 + 5O2 -> 4NO + 6H2O"),
+    ("KNO3","K2CO3", "2KNO3 + H2CO3 -> K2CO3 + 2HNO3"),
+    ("H2CO3","K2CO3", "2KNO3 + H2CO3 -> K2CO3 + 2HNO3"),
+    ("KNO3","HNO3", "2KNO3 + H2CO3 -> K2CO3 + 2HNO3"),
+    ("H2CO3","HNO3", "2KNO3 + H2CO3 -> K2CO3 + 2HNO3"),
+    ("CH4","CO2", "CH4 + 2O2 -> CO2 + 2H2O"),
+    ("Na","NaCl", "2Na + 2Cl -> NaCl"),
+    ("Cl","NaCl", "2Na + 2Cl -> NaCl"),
+    ("Al","Al2CO3", "4Al + 3O2 -> 2Al2CO3"),
+    ("O2","Al2CO3", "4Al + 3O2 -> 2Al2CO3"),
+    ("N2","NH3", "N2 + 3H2 -> 2NH3"),
+    ("H2","NH3", "N2 + 3H2 -> 2NH3"),
+    ("H2SO4","Pb(SO4)2", "2H2SO4 + Pb(OH)4 -> Pb(SO4)2 + 4H2O"),
+    ("Pb(OH)4","Pb(SO4)2", "2H2SO4 + Pb(OH)4 -> Pb(SO4)2 + 4H2O"),
+    ("Al","AlCl3", "2Al + 6HCl -> 2AlCl3 + 3H2"),
+    ("HCl","AlCl3", "2Al + 6HCl -> 2AlCl3 + 3H2"),
+    ("H3PO4","PCl5", "H3PO4 + 5HCl -> PCl5 + 4H2O"),
+    ("HCl","PCl5", "H3PO4 + 5HCl -> PCl5 + 4H2O"),
+    ("As","Na3AsO3", "2As + 6NaOH -> 2Na3AsO3 + 3H2"),
+    ("NaOH","Na3AsO3", "2As + 6NaOH -> 2Na3AsO3 + 3H2"),
+    ("Zn","ZnCl2", "Zn + 2HCl -> ZnCl2 + H2");
+INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation)
+    VALUES("HCl","ZnCl2", "Zn + 2HCl -> ZnCl2 + H2"),
+    ("Ca3(PO4)2","CaSO4", "Ca3(PO4)2 + 2H2SO4 -> 2CaSO4 + Ca(H2PO4)2"),
+    ("H2SO4","CaSO4", "Ca3(PO4)2 + 2H2SO4 -> 2CaSO4 + Ca(H2PO4)2"),
+    ("Ca3(PO4)2","Ca(H2PO4)2", "Ca3(PO4)2 + 2H2SO4 -> 2CaSO4 + Ca(H2PO4)2"),
+    ("H2SO4","Ca(H2PO4)2", "Ca3(PO4)2 + 2H2SO4 -> 2CaSO4 + Ca(H2PO4)2"),
+    ("Au2S3","Au", "Au2S3 + 3H2 -> 2Au + 3H2S"),
+    ("H2","Au", "Au2S3 + 3H2 -> 2Au + 3H2S"),
+    ("Au2S3","H2S", "Au2S3 + 3H2 -> 2Au + 3H2S");
+INSERT INTO Produces (ReactantFormula, ProductFormula, ChemicalEquation)
+    VALUES("H2","H2S", "Au2S3 + 3H2 -> 2Au + 3H2S"),
+    ("NH4NO3","N2", "2NH4NO3 -> 2N2 + O2 + 4H2O"),
+    ("NH4NO3","O2", "2NH4NO3 -> 2N2 + O2 + 4H2O"),
+    ("NH4NO3","H2O", "2NH4NO3 -> 2N2 + O2 + 4H2O");
 
 SELECT * FROM PRODUCES;
 
