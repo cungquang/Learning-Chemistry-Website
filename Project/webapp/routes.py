@@ -21,6 +21,8 @@
 
 from flask import render_template, url_for, flash, redirect, request, jsonify
 from flask_login import login_user, current_user, logout_user
+from flask import render_template, url_for, flash, redirect, abort
+from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
 from webapp.forms import CommentForm, SignupForm, SigninForm
 from webapp.datas import RegisterUser, Post, Discuss, ReplyComment
@@ -105,6 +107,7 @@ def forum():
 
 #New post option
 @app.route("/forum/new_post", methods=['GET','POST'])
+@login_required
 def new_post():
 	#Get data from Comment form
 	postform = CommentForm()					
@@ -119,15 +122,49 @@ def new_post():
 		flash(f'Create a new post on {datetime.utcnow()}')
 		return redirect(url_for('forum'))
 
-	return render_template('new_post.html', title='Create', postform=postform)
+	return render_template('new_post.html', title='Create', postform=postform, legend='New Post')
 
 #Route for each post
-@app.route("/post/<int:postid>")
+@app.route("/forum/<int:postid>")
 def single_post(postid):
 	
-	#get all infor of the post match condition
+	#get the post match id:
 	topic = Post.query.get_or_404(postid)
 	return render_template("single_post.html", title=topic.PostTitle, topic=topic)
+
+
+
+@app.route("/forum/<int:postid>update",methods=['GET', 'POST'])
+@login_required
+def update_post(postid):
+
+	#get the post match the id:
+	topic = Post.query.get_or_404(postid)
+
+	#check if this is the creator of the post:
+	if topic.registeruser != current_user:
+		#response the forbidden route
+		abort(403)				
+	
+	#if the method is posting information - POST:
+	updatetopic = CommentForm()
+
+	#If user input is valid for updating, then add to the post
+	if updatetopic.validate_on_submit():
+		topic.PostTitle = updatetopic.postTitle.data
+		topic.PostContent = updatetopic.postContent.data
+		
+		#update the content and title to the current topic:
+		db.session.commit()	
+		flash(f'Update the post on {datetime.utcnow()}','success')
+		return redirect(url_for('post',postid=topic.PostID))
+
+	#If the method is gettnig information - GET:
+	elif request.method == 'GET':
+		#Set the default of the post as the current content and title:
+		updatetopic.postTitle.data = topic.PostTitle
+		updatetopic.postContent.data = topic.PostContent
+	return render_template('new_post.html', title='Update', update=updatetopic, legend='Update Post')
 
 
 # routes for John + Chris

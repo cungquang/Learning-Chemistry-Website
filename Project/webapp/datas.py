@@ -16,7 +16,6 @@
 *																				*
 *********************************************************************************
 """
-
 from webapp import db, login_manager	
 from flask_login import UserMixin
 from datetime import datetime
@@ -77,7 +76,6 @@ class Discuss(db.Model):
 		return f"Discuss('{self.PostID}','{self.UserID}','{self.CreatorName}')"
 
 
-
 #----------------------------------Post Table-------------------------------------- 
 class Post(db.Model):
 	__tablename__ = "post"
@@ -94,7 +92,6 @@ class Post(db.Model):
 
 	def __repr__(self):
 		return f"Post('{self.PostID}',{self.AuthorID}','{self.PostTitle}','{self.PostContent}','{self.DatePost}')"
-
 
 
 #-------------------------------ReplyComment table-------------------------------- 

@@ -5,7 +5,7 @@
 		<form method="POST" action="">
 			{{ postform.hidden_tag() }}
 			<fieldset class="form-group">
-				<legend class="border-bottom mb-4">Discussions</legend>
+				<legend class="border-bottom mb-4">{{ legend }}</legend>
 				<div class="form-group">
 					{{ postform.postTitle.label(class="form-control-label") }}
 					{{ postform.postTitle(class="form-control form-control-lg") }}
