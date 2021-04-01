@@ -19,8 +19,11 @@
 *********************************************************************************
 """
 
+<<<<<<< Updated upstream
 from flask import render_template, url_for, flash, redirect, request, jsonify
 from flask_login import login_user, current_user, logout_user
+=======
+>>>>>>> Stashed changes
 from flask import render_template, url_for, flash, redirect, abort
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
@@ -132,8 +135,11 @@ def single_post(postid):
 	topic = Post.query.get_or_404(postid)
 	return render_template("single_post.html", title=topic.PostTitle, topic=topic)
 
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
 @app.route("/forum/<int:postid>update",methods=['GET', 'POST'])
 @login_required
 def update_post(postid):
@@ -165,6 +171,7 @@ def update_post(postid):
 		updatetopic.postTitle.data = topic.PostTitle
 		updatetopic.postContent.data = topic.PostContent
 	return render_template('new_post.html', title='Update', update=updatetopic, legend='Update Post')
+<<<<<<< Updated upstream
 
 
 # routes for John + Chris
@@ -232,3 +239,5 @@ def livesearch():
     produce_json = {str(key): value for key, value in keys_values}
     replace_none(produce_json)
     return jsonify(produce_json)
+=======
+>>>>>>> Stashed changes
