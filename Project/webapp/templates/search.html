@@ -1,0 +1,105 @@
+{% extends "layout.html" %}                            
+
+{% block content %} 
+    <style>
+        @font-face {
+            font-family: MyFont;
+            src: url(nightmore_brush.ttf);
+        }
+
+        #content{
+            background-color: lightblue;
+            color: black;
+            padding: 0px;
+            text-align: center;
+        }
+        #content2{
+            background-color:bisque;
+            color: black;
+            padding: 0px;
+            text-align: center;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+    var allCompounds = "{{ all_compounds | safe}}";
+    allCompounds = allCompounds.replace(/None/g, '""')
+    allCompounds = allCompounds.replace(/'/g, '"')
+    allCompounds = JSON.parse(allCompounds);
+
+    function getComp(textContent){
+        $.ajax({
+            method:"post",
+            url:"/compoundinfo",
+            data:{text:textContent},
+            success:function(res2){
+                var data ="<div class='content2-group'>";
+                data += `<p class='content2-group-item'> Compound Name: ${res2[0].CompoundName}<br/>
+                                                         Chemical Formula:  ${res2[0].ChemicalFormula}<br/>
+                                                         Atomic Number: ${res2[0].AtomicNumber}<br/>
+                                                         State: ${res2[0].State}<br/>
+                                                         Melting Point: ${res2[0].MeltingPoint}<br/>
+                                                         Boiling Point: ${res2[0].BoilingPoint}<br/>
+                                                         Appearance: ${res2[0].Appearance}<br/>
+                                                         Molecular Weight: ${res2[0].MolecularWeight}<br/>
+                                                 </p>`; 
+                 data+= "</div>";
+                 $("#content2").html(data);
+            } 
+        });
+    }
+
+    function getProd(textContent){
+        $.ajax({
+             method:"post",
+             url:"/livesearch",
+             data:{text:textContent},
+             success:function(res){
+                console.log(res);
+                 var data = "<div class='content-group'>";
+                     data += `<p class='content-group-item'> Reactant: ${res[0].ReactantFormula}<br/>
+                                                    Product:  ${res[0].ProductFormula} <br/>
+                                                    Equation: ${res[0].ChemicalEquation}</p>`;   
+                 data += "</div>";
+                 $("#content").html(data);
+             }
+         });
+    }
+
+    $(document).ready(function(){
+        $("#livebox").on("input",function(e){
+            $("#datalist").empty();
+            var data = "<div class='list-group'>";
+            $.each(allCompounds,function(index,value){
+                if (value.CompoundName.includes(e.target.value)) {
+                    data += "<p class='list-group-item list-group-item-action'>"+value.ChemicalFormula+"</p>";
+                }
+            });
+            data += "</div>";
+            $("#datalist").html(data);
+            $('.list-group-item').on('click', function() {       
+                getComp($(this).text());
+                getProd($(this).text());
+          })
+        });
+    });
+
+
+    </script> 
+
+	<div class="container">
+            <div class = "search-input" >
+                <div class ="search">
+                <label>Search...</label>
+                <input type ="text" id = "livebox" name = "text" class = "form-control" placeholder = "Lookup Compound/Reactant/Product" autocomplete = "off">
+                <p id = "datalist"></p>
+                <div id = "content">
+                </div>
+                <div id = "content2">
+                </div>
+           </div>
+        </div>
+    </div>
+    
+{% endblock content%}
