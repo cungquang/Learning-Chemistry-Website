@@ -152,7 +152,7 @@ class Produces(db.Model):
     product_ref = db.relationship('Compound', foreign_keys = [ProductFormula])
 
     def __repr__(self):
-        return f"Producesc('{self.ReactantFormula}','{self.ProductFormula}','{self.ChemicalEquation}','{self.ReactionCondition}')"
+        return f"Produces('{self.ReactantFormula}','{self.ProductFormula}','{self.ChemicalEquation}','{self.ReactionCondition}')"
 
 #-------------------------------ReplyComment table-------------------------------- 
 class Search(db.Model):
@@ -185,15 +185,55 @@ class SearchHistory(db.Model):
 
 # Xixuan's Work starts from here
 #----------------------------------Learn table-----------------------------------
+
 class PracticeQuestion(db.Model):
     __table__ = "practicequestion"
     QuestionID = db.Column(db.Integer, primary_key = True, nullable = False)
-    Level = db.Column(db.Integer)
-    Content = db.Column(db.String(500))
-    Solution = db.Column(db.String(500))
+    Difficulty = db.Column(db.String(50), nullable = False)
+    Content = db.Column(db.String(500), nullable = False)
+    Solution = db.Column(db.String(500), nullable = False)
 
     def __repr__(self):
-        return f"Learn('{self.QuestionID}', '{self.Level}', '{self.Content}', '{self.Solution}')"
+        return f"PracticeQuestion('{self.QuestionID}', '{self.Difficulty}', '{self.Content}', '{self.Solution}')"
+
+class BalanceEquation(db.Model):
+    __table__ = "balanceequation"
+    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.QuestionID'), primary_key=True, nullable=False)
+
+    balanceequation = db.relationship('PracticeQuestion', lazy = True)
+    def __repr__(self):
+        return f"BalanceEquation('{self.QuestionID}')"
+
+class ProblemSolving(db.Model):
+    __table__ = "problemsolving"
+    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.QuestionID'), primary_key=True, nullable=False)
+    Instruction = db.Column(db.String(500))
+
+    problemsolving = db.relationship('PracticeQuestion', lazy=True)
+
+    def __repr__(self):
+        return f"ProblemSolving('{self.QuestionID}', '{self.Instruction}')"
+
+class MultipleChoice(db.Model):
+    __table__ = "multiplechoice"
+    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.QuestionID'), primary_key=True, nullable=False)
+
+    multiplechoice = db.relationship('PracticeQuestion', lazy=True)
+
+    def __repr__(self):
+        return f"MultipleChoice('{self.QuestionID}')"
+
+class Choice(db.Model):
+    __table__ = "choice"
+    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.QuestionID'), primary_key=True, nullable=False)
+    ChoiceID = db.Column(db.string(3), primary_key = True, nullable = False)
+    Explaination = db.Column(db.String(500))
+    Content = db.Column(db.String(500), nullable = False)
+
+    choices = db.relationship('PracticeQuestion', lazy=True)
+
+    def __repr__(self):
+        return f"Choices('{self.QuestionID}', '{self.ChoiceID}', '{self.Explaination}', '{self.Content}')"
 
 class Learn(db.Model):
     __table__ = "learn"
@@ -205,45 +245,6 @@ class Learn(db.Model):
 
     def __repr__(self):
         return f"Learn('{self.UserID}', '{self.QuestionID}')"
-
-class BalanceEquation(db.Model):
-    __table__ = "balanceequation"
-    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.QuestionID'), primary_key=True, nullable=False)
-
-    balanceequation = db.relationship('PracticeQuestion', lazy = True)
-    def __repr__(self):
-        return f"Learn('{self.QuestionID}')"
-
-class ProblemSolving(db.Model):
-    __table__ = "problemsolving"
-    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.QuestionID'), primary_key=True, nullable=False)
-    Instruction = db.Column(db.String(500))
-
-    problemsolving = db.relationship('PracticeQuestion', lazy=True)
-
-    def __repr__(self):
-        return f"Learn('{self.QuestionID}', '{self.Instruction}')"
-
-class MultipleChoice(db.Model):
-    __table__ = "multiplechoice"
-    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.QuestionID'), primary_key=True, nullable=False)
-
-    multiplechoice = db.relationship('PracticeQuestion', lazy=True)
-
-    def __repr__(self):
-        return f"Learn('{self.QuestionID}')"
-
-class Choices(db.Model):
-    __table__ = "choices"
-    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.QuestionID'), primary_key=True, nullable=False)
-    ChoiceID = db.Column(db.Integer, primary_key = True, nullable = False)
-    Explaination = db.Column(db.String(500))
-    Content = db.Column(db.String(500))
-
-    choices = db.relationship('PracticeQuestion', lazy=True)
-
-    def __repr__(self):
-        return f"Learn('{self.QuestionID}', '{self.ChoiceID}', '{self.Explaination}', '{self.Content}')"
 # Xixuan's work ends at here
 
 #----------------------------------Create table-----------------------------------
