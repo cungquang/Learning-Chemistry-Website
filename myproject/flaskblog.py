@@ -187,18 +187,18 @@ class SearchHistory(db.Model):
 #----------------------------------Learn table-----------------------------------
 class PracticeQuestion(db.Model):
     __table__ = "practicequestion"
-    qID = db.Column(db.Integer, primary_key = True, nullable = False)
+    QuestionID = db.Column(db.Integer, primary_key = True, nullable = False)
     Level = db.Column(db.Integer)
     Content = db.Column(db.String(500))
     Solution = db.Column(db.String(500))
 
     def __repr__(self):
-        return f"Learn('{self.qID}', '{self.Level}', '{self.Content}', '{self.Solution}')"
+        return f"Learn('{self.QuestionID}', '{self.Level}', '{self.Content}', '{self.Solution}')"
 
 class Learn(db.Model):
     __table__ = "learn"
     UserID = db.Column(db.Integer, db.ForeignKey('registeruser.id'), primary_key = True, nullable = False)
-    qID = db.Column(db.Integer, db.ForeignKey('practicequestion.qID'), primary_key = True, nullable = False)
+    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.QuestionID'), primary_key = True, nullable = False)
 
     learn = db.relationship('RegisterUser', lazy = True)
     learn = db.relationship('PracticeQuestion', lazy = True)
@@ -208,7 +208,7 @@ class Learn(db.Model):
 
 class BalanceEquation(db.Model):
     __table__ = "balanceequation"
-    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.qID'), primary_key=True, nullable=False)
+    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.QuestionID'), primary_key=True, nullable=False)
 
     balanceequation = db.relationship('PracticeQuestion', lazy = True)
     def __repr__(self):
@@ -216,7 +216,7 @@ class BalanceEquation(db.Model):
 
 class ProblemSolving(db.Model):
     __table__ = "problemsolving"
-    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.qID'), primary_key=True, nullable=False)
+    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.QuestionID'), primary_key=True, nullable=False)
     Instruction = db.Column(db.String(500))
 
     problemsolving = db.relationship('PracticeQuestion', lazy=True)
@@ -226,7 +226,7 @@ class ProblemSolving(db.Model):
 
 class MultipleChoice(db.Model):
     __table__ = "multiplechoice"
-    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.qID'), primary_key=True, nullable=False)
+    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.QuestionID'), primary_key=True, nullable=False)
 
     multiplechoice = db.relationship('PracticeQuestion', lazy=True)
 
@@ -235,7 +235,7 @@ class MultipleChoice(db.Model):
 
 class Choices(db.Model):
     __table__ = "choices"
-    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.qID'), primary_key=True, nullable=False)
+    QuestionID = db.Column(db.Integer, db.ForeignKey('practicequestion.QuestionID'), primary_key=True, nullable=False)
     ChoiceID = db.Column(db.Integer, primary_key = True, nullable = False)
     Explaination = db.Column(db.String(500))
     Content = db.Column(db.String(500))
