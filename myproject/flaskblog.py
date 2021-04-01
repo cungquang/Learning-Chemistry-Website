@@ -307,7 +307,7 @@ def compoundinfo():
     compound_headers = ["CompoundName","ChemicalFormula","AtomicNumber","State","MeltingPoint","BoilingPoint","Appearance","MolecularWeight"]
     compound_dict = {}
     index = 0
-    compound_dict[index] = {compound_headers[index]: compound.CompoundName, compound_headers[index+1]: compound.ChemicalFormula, compound_headers[index+2]: compound.AtomicNumber, compound_headers[index+3]: compound.State, compound_headers[index+4]: compound.MeltingPoint, compound_headers[index+5]: compound.Appearance, compound_headers[index+6]: compound.MolecularWeight}
+    compound_dict[index] = {compound_headers[index]: compound.CompoundName, compound_headers[index+1]: compound.ChemicalFormula, compound_headers[index+2]: compound.AtomicNumber, compound_headers[index+3]: compound.State, compound_headers[index+4]: compound.MeltingPoint, compound_headers[index+5]: compound.BoilingPoint, compound_headers[index+6]: compound.Appearance, compound_headers[index+7]: compound.MolecularWeight}
     keys_values = compound_dict.items()
     compound_json = {str(key): value for key, value in keys_values}
     replace_none(compound_json)
