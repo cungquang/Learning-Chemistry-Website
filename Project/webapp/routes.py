@@ -124,7 +124,7 @@ def new_post():
 
 	return render_template('new_post.html', title='Create', postform=postform, legend='New Post')
 
-#Route for each post
+#Route for each post (to show)
 @app.route("/forum/<int:postid>")
 def single_post(postid):
 	
@@ -133,7 +133,8 @@ def single_post(postid):
 	return render_template("single_post.html", title=topic.PostTitle, topic=topic)
 
 
-@app.route("/forum/<int:postid>update",methods=['GET', 'POST'])
+#Route for update_post
+@app.route("/forum/<int:postid>/update",methods=['GET', 'POST'])
 @login_required
 def update_post(postid):
 
@@ -143,10 +144,10 @@ def update_post(postid):
 	#check if this is the creator of the post:
 	if topic.registeruser != current_user:
 		#response the forbidden route
-		abort(403)				
+		abort(403)					#if not abort the access
 	
 	#if the method is posting information - POST:
-	updatetopic = CommentForm()
+	updatetopic = CommentForm() 
 
 	#If user input is valid for updating, then add to the post
 	if updatetopic.validate_on_submit():
@@ -156,14 +157,16 @@ def update_post(postid):
 		#update the content and title to the current topic:
 		db.session.commit()	
 		flash(f'Update the post on {datetime.utcnow()}','success')
-		return redirect(url_for('post',postid=topic.PostID))
+		return redirect(url_for('single_post',postid=topic.PostID))
 
 	#If the method is gettnig information - GET:
 	elif request.method == 'GET':
 		#Set the default of the post as the current content and title:
 		updatetopic.postTitle.data = topic.PostTitle
 		updatetopic.postContent.data = topic.PostContent
-	return render_template('new_post.html', title='Update', update=updatetopic, legend='Update Post')
+	return render_template('new_post.html', title='Edit', postform=updatetopic, legend='Edit Post')
+
+#Route for delete_post
 
 
 
