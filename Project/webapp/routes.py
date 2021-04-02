@@ -167,8 +167,20 @@ def update_post(postid):
 	return render_template('new_post.html', title='Edit', postform=updatetopic, legend='Edit Post')
 
 #Route for delete_post
+@app.route("/forum/<int:postid>/delete",methods=['POST'])
+@login_required
+def delete_post(postid):
+	#get the post match the id:
+	topic = Post.query.get_or_404(postid)
 
-
+	#check if this is the creator of the post:
+	if topic.registeruser != current_user:
+		#response the forbidden route
+		abort(403)		
+	db.session.delete(topic)
+	db.session.commit()
+	flash(f'Successfully delete the post','success')
+	return redirect(url_for('home'))
 
 # routes for John + Chris
 #---------------------------------Search Route----------------------------------- 

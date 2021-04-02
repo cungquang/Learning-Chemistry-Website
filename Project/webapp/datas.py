@@ -88,7 +88,7 @@ class Post(db.Model):
 	
 	#Setup foreign key: Discuss.PosID reference to Post.PostID
 	Discuss = db.relationship('Discuss', backref='post')
-	Reply = db.relationship('ReplyComment', backref='post')
+	Reply = db.relationship('ReplyComment',cascade="all,delete", backref='post')
 
 	def __repr__(self):
 		return f"Post('{self.PostID}',{self.AuthorID}','{self.PostTitle}','{self.PostContent}','{self.DatePost}')"

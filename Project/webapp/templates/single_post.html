@@ -33,10 +33,10 @@
 		      <h1>Delete Post</h1>
 		      <p>Are you sure you want to delete this post?</p>
 
-		      <div class="clearfix">
-		        <button class="btn btn-secondary btn-sm m-1">Cancel</button>
-		        <form action="/delete_post" method="POST">
-		        	<input class="btn btn-danger" type="submit" value="Delete">
+		      <div class="modal-footer">
+		        <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('single_post', postid=topic.PostID) }}">No</a>
+		        <form action="{{ url_for('delete_post', postid=topic.PostID) }}" method="POST">
+		        	<input class="btn btn-danger btn-sm m-1" type="submit" value="Yes">
 		        </form>	
 		      </div>
 		    </div>
