@@ -176,7 +176,7 @@ def delete_post(postid):
 	#check if this is the creator of the post:
 	if topic.registeruser != current_user:
 		#response the forbidden route
-		abort(403)		
+		abort(403)
 	db.session.delete(topic)
 	db.session.commit()
 	flash(f'Successfully delete the post','success')
