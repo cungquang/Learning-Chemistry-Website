@@ -97,3 +97,16 @@ class CommentForm(FlaskForm):
 	#variable to submit the post
 	post = SubmitField('Post')
 
+#-------------------------------Reply Form--------------------------------- 
+#ReplyForm():
+# this function inherit from FlaskForm
+# Pre-condition: none
+# Post-condition: return the form which contain the reply information
+class ReplyForm(FlaskForm):
+
+	#variable contains the content of tohe post
+	replyContent = TextAreaField('Reply Content',validators=[DataRequired()])
+	
+	#variable to submit the post
+	reply = SubmitField('Reply')
+

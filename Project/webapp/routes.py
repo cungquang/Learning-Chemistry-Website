@@ -24,7 +24,7 @@ from flask_login import login_user, current_user, logout_user
 from flask import render_template, url_for, flash, redirect, abort
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
-from webapp.forms import CommentForm, SignupForm, SigninForm
+from webapp.forms import CommentForm, SignupForm, SigninForm, ReplyForm
 from webapp.datas import RegisterUser, Post, Discuss, ReplyComment
 from webapp.search_data import Compound, Produces, Search, SearchHistory
 from webapp import app, db, bcrypt
@@ -130,11 +130,12 @@ def single_post(postid):
 	
 	#get the post match id:
 	topic = Post.query.get_or_404(postid)
-	return render_template("single_post.html", title=topic.PostTitle, topic=topic)
+	reply = ReplyComment.query.filter(ReplyComment.PostID==postid)
+	return render_template("single_post.html", title=topic.PostTitle, topic=topic, Reply=reply)
 
 
 #Route for update_post
-@app.route("/forum/<int:postid>/update",methods=['GET', 'POST'])
+@app.route("/forum/<int:postid>/updatepost",methods=['GET', 'POST'])
 @login_required
 def update_post(postid):
 
@@ -180,7 +181,80 @@ def delete_post(postid):
 	db.session.delete(topic)
 	db.session.commit()
 	flash(f'Successfully delete the post','success')
-	return redirect(url_for('home'))
+	return redirect(url_for('forum'))
+
+
+
+#New reply to the post:
+@app.route("/forum/<int:postid>/reply", methods=['GET','POST'])
+@login_required
+def new_reply(postid):
+	#Get data from Comment form
+	replyform = ReplyForm()					
+	
+	#Validate the post content
+	if replyform.validate_on_submit():	
+
+		#add new post into database:
+		reply = ReplyComment(PostID = postid, AuthorID=current_user.id, EditorName=current_user.FirstName, 
+			Content=replyform.replyContent.data)
+		db.session.add(reply)
+		db.session.commit()
+		flash(f'Reply on this post on {datetime.utcnow()}','success')
+		return redirect(url_for('single_post',postid=postid))
+
+	return render_template('new_reply.html', title='Reply', replyform=replyform, legend='New Reply')
+
+
+#Route for update_post
+@app.route("/forum/<int:postid>/<int:replyid>/update",methods=['GET', 'POST'])
+@login_required
+def update_reply(postid,replyid):
+
+	#get the post match the id:
+	reply = ReplyComment.query.filter_by(PostID=postid, CommentID=replyid).first()
+
+	#check if this is the creator of the reply:
+	if reply.registeruser != current_user:
+		#response the forbidden route
+		abort(403)					#if not abort the access
+	
+	#if the method is posting information - POST:
+	updatereply = ReplyForm() 
+
+	#If user input is valid for updating, then add to the post
+	if updatereply.validate_on_submit():
+		reply.Content = updatereply.replyContent.data
+		
+		#update the content and title to the current topic:
+		db.session.commit()	
+		flash(f'Update the reply on {datetime.utcnow()}','success')
+		return redirect(url_for('single_post',postid=reply.PostID))
+
+	#If the method is getting information - GET:
+	elif request.method == 'GET':
+		#Set the default of the post as the current content and title:
+		updatereply.replyContent.data = reply.Content
+	return render_template('new_reply.html', title='Edit', replyform=updatereply, legend='Edit Reply')
+
+
+#Route for delete_reply
+@app.route("/forum/<int:postid>/<int:replyid>/delete",methods=['POST'])
+@login_required
+def delete_reply(postid,replyid):
+	#get the post match the id:
+	reply = ReplyComment.query.filter_by(PostID=postid,CommentID=replyid).first()
+
+	#check if this is the creator of the post:
+	if reply.registeruser != current_user:
+		#response the forbidden route
+		abort(403)
+	db.session.delete(reply)
+	db.session.commit()
+	flash(f'Successfully delete the post','success')
+	return redirect(url_for('forum'))
+
+
 
 # routes for John + Chris
 #---------------------------------Search Route----------------------------------- 

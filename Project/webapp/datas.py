@@ -49,6 +49,7 @@ def load_user(user_id):
 
 class RegisterUser(db.Model, UserMixin):
 	__tablename__ = "registeruser"
+	__table_args__={'sqlite_autoincrement': True}
 	id = db.Column(db.Integer, primary_key = True, nullable = False)
 	FirstName = db.Column(db.String(50), nullable = False)
 	LastName = db.Column(db.String(50), nullable = False)
@@ -58,6 +59,7 @@ class RegisterUser(db.Model, UserMixin):
 	#Setup foreign key: Discuss.UserID reference to RegisterUser.UserID
 	discuss = db.relationship('Discuss', backref='registeruser', lazy=True)
 	post = db.relationship('Post', backref='registeruser', lazy=True)
+	reply = db.relationship('ReplyComment', cascade="all,delete", backref='registeruser', lazy=True)
 
 	def __repr__(self):
 		return f"RegisterUser('{self.id}','{self.FirstName}','{self.LastName}','{self.Email}','{self.Password}')"
@@ -79,6 +81,7 @@ class Discuss(db.Model):
 #----------------------------------Post Table-------------------------------------- 
 class Post(db.Model):
 	__tablename__ = "post"
+	__table_args__={'sqlite_autoincrement': True}
 	PostID = db.Column(db.Integer, primary_key = True, nullable = False)
 	AuthorID = db.Column(db.Integer, db.ForeignKey('registeruser.id'), nullable = False)
 	
@@ -88,7 +91,7 @@ class Post(db.Model):
 	
 	#Setup foreign key: Discuss.PosID reference to Post.PostID
 	Discuss = db.relationship('Discuss', backref='post')
-	Reply = db.relationship('ReplyComment',cascade="all,delete", backref='post')
+	Reply = db.relationship('ReplyComment',cascade="all,delete", backref='post', lazy=True)
 
 	def __repr__(self):
 		return f"Post('{self.PostID}',{self.AuthorID}','{self.PostTitle}','{self.PostContent}','{self.DatePost}')"
@@ -97,16 +100,18 @@ class Post(db.Model):
 #-------------------------------ReplyComment table-------------------------------- 
 class ReplyComment(db.Model):
 	__tablename__ = "replycomment"
+	__table_args__={'sqlite_autoincrement': True}
 	CommentID = db.Column(db.Integer, primary_key = True, nullable = False)
-	PostID = db.Column(db.Integer, db.ForeignKey('post.PostID'), primary_key = True, nullable = False)
+	PostID = db.Column(db.Integer, db.ForeignKey('post.PostID'), nullable = False)
+	AuthorID = db.Column(db.Integer,db.ForeignKey('registeruser.id'), nullable=False)
 	
+
 	EditorName = db.Column(db.String(100), default = "Anonymous")
 	Content = db.Column(db.String(300), nullable = False)
 	CommentDate = db.Column(db.DateTime, nullable = False, default=datetime.utcnow)
 
-
 	def __repr__(self):
-		return f"ReplyComment('{self.CommentID}','{self.PostID}','{self.EditorName}','{self.Content}','{self.CommentDate}')"
+		return f"ReplyComment('{self.CommentID}','{self.PostID}','{self.AuthorID}','{self.EditorName}','{self.Content}','{self.CommentDate}')"
 
 
 #----------------------------------Create table----------------------------------- 

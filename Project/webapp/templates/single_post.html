@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
+		<!-- Print Post -->
 		<article class="media content-section">
 			<div class="media-body">
 				<div>
@@ -15,21 +16,22 @@
 					</small>
 					<p class="article-content">{{ topic.PostContent }}</p>
 				</div>
+				<!--Button -->
 				{% if topic.registeruser == current_user %}
 					<div>
 						<a class="btn btn-secondary btn-sm m-1" href="{{ url_for('update_post', postid=topic.PostID) }}">Edit</a>
-						<button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+						<button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#topicModal">Delete</button>
 					</div>
 				{% endif %}
 			</div>
 		</article>
 
-		<!-- Modal -->
-		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="deleteModalLabel" aria-hidden="true">
+		<!-- deletePost Modal -->
+		<div class="modal fade" id="topicModal" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="topicModalLabel" aria-hidden="true">
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <h5 class="modal-title" id="deleteModalLabel">Delete</h5>
+		        <h5 class="modal-title" id="topicModalLabel">Delete</h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
 		        </button>
@@ -47,6 +49,52 @@
 		  </div>
 		</div>
 
+		<!-- Print all Reply -->
+		{% for rep in Reply %}
+		<article class="media content-section">
+			<div class="media-body">
+				<small 	
+					class="text-muted"> {{ rep.EditorName }}-{{ rep.CommentDate.strftime('%Y-%m-%d') }}
+				</small>
+				<p class="article-content">{{ rep.Content}}</p>
+			</div>
+
+			<!--Button -->
+			{% if rep.registeruser == current_user %}
+				<div>
+					<a class="btn btn-secondary btn-sm m-1" href="{{ url_for('update_reply', postid=topic.PostID, replyid=rep.CommentID) }}">Edit</a>
+					<button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#replyModal">Delete</button>
+				</div>
+
+
+				<!-- deleteReply Modal -->
+				<div class="modal fade" id="replyModal" tabindex="-1" role="dialog" data-backdrop="false" aria-labelledby="replyModalLabel" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="replyModalLabel">Delete</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				        ...
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				        <form action="{{ url_for('delete_reply', postid=topic.PostID, replyid=rep.CommentID) }}" method="POST">
+			            	<input class="btn btn-danger" type="submit" value="Delete">
+			          	</form>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			{% endif %}
+		</article>
+
+
+		{% endfor %}
+
 {% endblock content %}
 
 		
@@ -55,7 +103,7 @@
 
 {% block list %}
 	<li class="list-group-item list-group-item">
-		<a class="list-group-item list-group-item" href="#">Add New Reply</a>
+		<a class="list-group-item list-group-item" href="{{ url_for('new_reply',postid=topic.PostID)}}">Add New Reply</a>
 	</li>
     <li class="list-group-item list-group-item">Latest Reply:</li>
     <li class="list-group-item list-group-item">Number of Reply:</li>

@@ -1,11 +1,10 @@
 {% extends "layout.html" %}
 
 {% block content %}
-	<h1 class="container">TIME TO LEARN CHEMISTRY!</h1> 
-	<h1>WHAT WOULD YOU LIKE TO DO?</h1>
-	<h1 class=container>SEARCH</h1>
-	<h1 class=container>PRACTICE</h1>
-	<h1 class=container>QUESTION</h1>
+	{% if current_user.is_authenticated %} 
+		<h1 class="container">Welcome, {{ current_user.FirstName }} {{ current_user.LastName }}</h1>
+		<h1 class="container">Time to learn Chemistry!</h1> 
+	{% endif %}
 {% endblock content %}
 
 {% block list %}
@@ -67,7 +66,7 @@
 	<div class="dropdown">
 	  <button class="dropbtn">Navigation</button>
 	  <div class="dropdown-content">
-	    <a href="{{ url_for('search') }}">Account</a>
+	    <a href="{{ url_for('search') }}">Search</a>
 	    <a href="{{ url_for('practice')}}">Practice</a>
 	    <a href="{{ url_for('forum')}}">Forum</a>
 	  </div>
