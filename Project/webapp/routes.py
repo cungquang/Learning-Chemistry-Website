@@ -288,13 +288,7 @@ def replace_none(test_dict):
 @app.route("/compoundinfo",methods=["POST","GET"])
 def compoundinfo():
     searchbox = request.form.get("text")
-    print(searchbox)
-    compounds = Compound.query.all()
-    compound = Compound()
-    for row in compounds:
-        if row.ChemicalFormula == searchbox:
-            compound = row
-    print(compound)
+    compound = Compound.query.filter(Compound.ChemicalFormula == searchbox).first()
     compound_headers = ["CompoundName","ChemicalFormula","AtomicNumber","State","MeltingPoint","BoilingPoint","Appearance","MolecularWeight"]
     compound_dict = {}
     index = 0
@@ -302,7 +296,6 @@ def compoundinfo():
     keys_values = compound_dict.items()
     compound_json = {str(key): value for key, value in keys_values}
     replace_none(compound_json)
-    print(compound_json)
     return jsonify(compound_json)
 
 
@@ -310,13 +303,7 @@ def compoundinfo():
 def livesearch():
     searchbox = request.form.get("text")
     print("Searchbox: " + searchbox)
-    produces = Produces.query.all()
-    # print(type(produces))
-    produce = Produces()
-    # print(type(produce))
-    for row in produces:
-        if row.ReactantFormula == searchbox or row.ProductFormula == searchbox:
-            produce = row
+    produce = Produces.query.filter((Produces.ReactantFormula == searchbox) | (Produces.ProductFormula == searchbox)).first()
     produce_headers = ["ReactantFormula", "ProductFormula", "ChemicalEquation"]
     produce_dict = {}
     index = 0
