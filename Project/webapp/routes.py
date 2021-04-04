@@ -27,6 +27,7 @@ from datetime import datetime
 from webapp.forms import CommentForm, SignupForm, SigninForm, ReplyForm
 from webapp.datas import RegisterUser, Post, Discuss, ReplyComment
 from webapp.search_data import Compound, Produces, Search, SearchHistory
+from webapp.Question_data import PracticeQuestion, Choice, Learn
 from webapp import app, db, bcrypt
 import json
 
