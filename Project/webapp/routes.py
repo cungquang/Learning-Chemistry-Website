@@ -309,8 +309,11 @@ def compoundinfo():
 @app.route("/livesearch",methods=["POST","GET"])
 def livesearch():
     searchbox = request.form.get("text")
+    print("Searchbox: " + searchbox)
     produces = Produces.query.all()
+    # print(type(produces))
     produce = Produces()
+    # print(type(produce))
     for row in produces:
         if row.ReactantFormula == searchbox or row.ProductFormula == searchbox:
             produce = row
