@@ -28,7 +28,7 @@ class Produces(db.Model):
     product_ref = db.relationship('Compound', foreign_keys = [ProductFormula])
 
     def __repr__(self):
-        return f"Producesc('{self.ReactantFormula}','{self.ProductFormula}','{self.ChemicalEquation}','{self.ReactionCondition}')"
+        return f"Producesc('{self.ReactantFormula}','{self.ProductFormula}','{self.ChemicalEquation}')"
 
 #-------------------------------ReplyComment table-------------------------------- 
 class Search(db.Model):

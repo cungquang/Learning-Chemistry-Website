@@ -30,6 +30,7 @@ from webapp.search_data import Compound, Produces, Search, SearchHistory
 from webapp.Question_data import PracticeQuestion, Choice, Learn
 from webapp import app, db, bcrypt
 import json
+from sqlalchemy import func
 
 
 
@@ -288,6 +289,33 @@ def replace_none(test_dict):
 @app.route("/compoundinfo",methods=["POST","GET"])
 def compoundinfo():
     searchbox = request.form.get("text")
+
+	# Aggregation By Chris
+	# SELECT COUNT(*) FROM Compound;
+    compounds_counts = db.session.query(Compound,func.count()).all()
+    print("The number of compounds in our database is",Ccounts_result)
+    Ccounts_result = compounds_counts[0][1]                ##Ccounts_result to store the number of component info in our databse
+	
+	# SELECT COUNT(*) FROM Produces WHERE ReactantFormula = Search GROUP BY ReactantFormula;
+    reactant_counts = db.session.query(Produces,func.count()).group_by(Produces.ReactantFormula).filter_by(ReactantFormula = searchbox).first()
+	# if there're no match at all, give it a count = 0
+    if reactant_counts == None:
+        Rcounts_result = 0
+    else:
+        Rcounts_result = reactant_counts[1]
+
+	# SELECT COUNT(*) FROM Produces WHERE ProductFormula = Search GROUP BY ProductFormula;
+    product_counts = db.session.query(Produces,func.count()).group_by(Produces.ProductFormula).filter_by(ProductFormula = searchbox).first()
+	# if there're no match at all, give it a count = 0
+    if product_counts == None:
+        Pcounts_result = 0
+    else:
+        Pcounts_result = product_counts[1]
+	
+	# The total records of search in our table = counts in ReactantFormula + counts in ProductFormula
+    total_counts = Rcounts_result + Pcounts_result
+    print("The Total Number of rows inloving",searchbox,"is",total_counts)
+     
     compound = Compound.query.filter(Compound.ChemicalFormula == searchbox).first()
     compound_headers = ["CompoundName","ChemicalFormula","AtomicNumber","State","MeltingPoint","BoilingPoint","Appearance","MolecularWeight"]
     compound_dict = {}
