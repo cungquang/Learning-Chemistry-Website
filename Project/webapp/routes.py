@@ -270,7 +270,12 @@ def search():
         compound_dict[i] = {compound_headers[index]: row.CompoundName, compound_headers[index+1]: row.ChemicalFormula, compound_headers[index+2]: row.AtomicNumber, compound_headers[index+3]: row.State, compound_headers[index+4]: row.MeltingPoint, compound_headers[index+5]: row.Appearance, compound_headers[index+6]: row.MolecularWeight}
     keys_values = compound_dict.items()
     compound_json = {str(key): value for key, value in keys_values}
-    return render_template('search.html', title='Search', all_compounds = compound_json)
+	# Aggregation By Chris
+	# SELECT COUNT(*) FROM Compound;
+    compounds_counts=db.session.query(Compound, func.count()).all()
+    Ccounts_result = compounds_counts[0][1]
+    print("The number of compounds in our database is: ",Ccounts_result)
+    return render_template('search.html', title='Search', all_compounds = compound_json, count_comp = Ccounts_result)
 
 def replace_none(test_dict):
     # checking for dictionary and replacing if None
@@ -288,15 +293,21 @@ def replace_none(test_dict):
 
 @app.route("/compoundinfo",methods=["POST","GET"])
 def compoundinfo():
-    searchbox = request.form.get("text")
+    searchbox = request.form.get("text")    
+    compound = Compound.query.filter(Compound.ChemicalFormula == searchbox).first()
+    compound_headers = ["CompoundName","ChemicalFormula","AtomicNumber","State","MeltingPoint","BoilingPoint","Appearance","MolecularWeight"]
+    compound_dict = {}
+    index = 0
+    compound_dict[index] = {compound_headers[index]: compound.CompoundName, compound_headers[index+1]: compound.ChemicalFormula, compound_headers[index+2]: compound.AtomicNumber, compound_headers[index+3]: compound.State, compound_headers[index+4]: compound.MeltingPoint, compound_headers[index+5]: compound.BoilingPoint, compound_headers[index+6]: compound.Appearance, compound_headers[index+7]: compound.MolecularWeight}
+    keys_values = compound_dict.items()
+    compound_json = {str(key): value for key, value in keys_values}
+    replace_none(compound_json)
+    return jsonify(compound_json)
 
-	# Aggregation By Chris
-	# SELECT COUNT(*) FROM Compound;
-    compounds_counts = db.session.query(Compound,func.count()).all()
-    print("The number of compounds in our database is",Ccounts_result)
-    Ccounts_result = compounds_counts[0][1]                ##Ccounts_result to store the number of component info in our databse
-	
-	# SELECT COUNT(*) FROM Produces WHERE ReactantFormula = Search GROUP BY ReactantFormula;
+
+@app.route("/livesearch",methods=["POST","GET"])
+def livesearch():
+    searchbox = request.form.get("text")
     reactant_counts = db.session.query(Produces,func.count()).group_by(Produces.ReactantFormula).filter_by(ReactantFormula = searchbox).first()
 	# if there're no match at all, give it a count = 0
     if reactant_counts == None:
@@ -315,27 +326,12 @@ def compoundinfo():
 	# The total records of search in our table = counts in ReactantFormula + counts in ProductFormula
     total_counts = Rcounts_result + Pcounts_result
     print("The Total Number of rows inloving",searchbox,"is",total_counts)
-     
-    compound = Compound.query.filter(Compound.ChemicalFormula == searchbox).first()
-    compound_headers = ["CompoundName","ChemicalFormula","AtomicNumber","State","MeltingPoint","BoilingPoint","Appearance","MolecularWeight"]
-    compound_dict = {}
-    index = 0
-    compound_dict[index] = {compound_headers[index]: compound.CompoundName, compound_headers[index+1]: compound.ChemicalFormula, compound_headers[index+2]: compound.AtomicNumber, compound_headers[index+3]: compound.State, compound_headers[index+4]: compound.MeltingPoint, compound_headers[index+5]: compound.BoilingPoint, compound_headers[index+6]: compound.Appearance, compound_headers[index+7]: compound.MolecularWeight}
-    keys_values = compound_dict.items()
-    compound_json = {str(key): value for key, value in keys_values}
-    replace_none(compound_json)
-    return jsonify(compound_json)
-
-
-@app.route("/livesearch",methods=["POST","GET"])
-def livesearch():
-    searchbox = request.form.get("text")
     print("Searchbox: " + searchbox)
     produce = Produces.query.filter((Produces.ReactantFormula == searchbox) | (Produces.ProductFormula == searchbox)).first()
-    produce_headers = ["ReactantFormula", "ProductFormula", "ChemicalEquation"]
+    produce_headers = ["ReactantFormula", "ProductFormula", "ChemicalEquation", "Occurence"]
     produce_dict = {}
     index = 0
-    produce_dict[index] = {produce_headers[index]: produce.ReactantFormula, produce_headers[index+1]: produce.ProductFormula, produce_headers[index+2]: produce.ChemicalEquation}
+    produce_dict[index] = {produce_headers[index]: produce.ReactantFormula, produce_headers[index+1]: produce.ProductFormula, produce_headers[index+2]: produce.ChemicalEquation, produce_headers[index+3]: total_counts}
     keys_values = produce_dict.items()
     produce_json = {str(key): value for key, value in keys_values}
     replace_none(produce_json)

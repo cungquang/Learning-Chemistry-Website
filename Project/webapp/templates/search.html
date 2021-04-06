@@ -11,19 +11,28 @@
             background-color: lightblue;
             color: black;
             padding: 0px;
+            font-size: 20px;
             text-align: center;
         }
         #content2{
             background-color:bisque;
             color: black;
             padding: 0px;
+            font-size: 20px;
             text-align: center;
+        }
+        .summary{
+            background-color:greenyellow;
+            font-size: 25px;
+            text-align: center;
+
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
     var allCompounds = "{{ all_compounds | safe}}";
+    //console.log(allCompounds);
     allCompounds = allCompounds.replace(/None/g, '""')
     allCompounds = allCompounds.replace(/'/g, '"')
     allCompounds = JSON.parse(allCompounds);
@@ -60,7 +69,8 @@
                  var data = "<div class='content-group'>";
                      data += `<p class='content-group-item'> Reactant: ${res[0].ReactantFormula}<br/>
                                                     Product:  ${res[0].ProductFormula} <br/>
-                                                    Equation: ${res[0].ChemicalEquation}</p>`;   
+                                                    Equation: ${res[0].ChemicalEquation} <br/>
+                                                    Other Possible Reactions Involving ${res[0].ReactantFormula}: ${res[0].Occurence} </p>`;   
                  data += "</div>";
                  $("#content").html(data);
              }
@@ -91,7 +101,7 @@
 	<div class="container">
             <div class = "search-input" >
                 <div class ="search">
-                <label>Search...</label>
+                <label>Search... </label>
                 <input type ="text" id = "livebox" name = "text" class = "form-control" placeholder = "Lookup Compound/Reactant/Product" autocomplete = "off">
                 <p id = "datalist"></p>
                 <div id = "content">
@@ -101,5 +111,11 @@
            </div>
         </div>
     </div>
-    
+
+    <div class="summary">
+        There are {{count_comp}} Compounds in our database
+    </div>
 {% endblock content%}
+
+
+        
