@@ -91,11 +91,43 @@ def logout():
 	return redirect(url_for('home'))
 
 
+# route for Frank
 #-------------------------------Practice Route---------------------------------- 
 #Practice page
 @app.route('/practice')
-def practice():
-	return render_template('practice.html')
+def practice(): 
+    #Store all the questions, solutions and explanations from database in the corresponding lists
+    allQue = PracticeQuestion.query.all()
+    QueList = []    
+    SolList = []  
+    ExplanList = []
+    for question in allQue:
+        QueList.append(question.Content) 
+        SolList.append(question.Solution)
+        ExplanList.append(question.Explanation)        
+    #Store all the option A from database in AList   
+    optionsA = Choice.query.filter_by(ChoiceID = "A").all()
+    AList = []
+    for choice in optionsA:
+        AList.append(choice.Content) 
+    #Store all the option B from database in BList 
+    optionsB = Choice.query.filter_by(ChoiceID = "B").all()
+    BList = []
+    for choice in optionsB:
+        BList.append(choice.Content)
+    #Store all the option C from database in CList     
+    optionsC = Choice.query.filter_by(ChoiceID = "C").all()
+    CList = []
+    for choice in optionsC:
+        CList.append(choice.Content)  
+    #Store all the option D from database in DList    
+    optionsD = Choice.query.filter_by(ChoiceID = "D").all()
+    DList = []
+    for choice in optionsD:
+        DList.append(choice.Content) 
+    
+    return render_template('practice.html', QueList = QueList, SolList = SolList, 
+           ExplanList = ExplanList, AList = AList, BList = BList, CList = CList, DList = DList)
 
 
 #---------------------------------Forum Route----------------------------------- 

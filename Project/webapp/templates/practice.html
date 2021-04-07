@@ -2,4 +2,227 @@
 
 {% block content %}
 
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+    body{
+        background: #fff;
+    }
+    ::selection{
+        color: #fff;
+        background: #007bff;
+    }
+    .start_btn{
+        position: absolute;
+        top: 300%;
+        left: 60%;
+    }
+    .question_box{
+        position: absolute;
+        top: 240%;
+        left: 70%;
+    }
+    .answer_box{
+        position: absolute;
+        top: 550%;
+        left: 70%;
+    }
+    .question_box.activeQuiz{
+        opacity: 1;
+        z-index: 5;
+        pointer-events: auto;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    .answer_box.activeAnswer{
+        opacity: 1;
+        z-index: 5;
+        pointer-events: auto;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    .start_btn button{
+        font-size: 25px;
+        font-weight: 500;
+        color: #fff;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        background: rgb(240, 144, 54);
+        cursor: pointer;
+    }
+    .question_box{
+        width: 600px;
+        height: 400px;
+        border-radius: 20px;
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        border: 2px solid rgb(240, 144, 54);
+    }
+    .answer_box{
+        width: 600px;
+        height: 100px;
+        padding: 8px 25px;
+        font-size: 16px;
+        font-weight: 400;
+        background: #fff;
+        border-radius: 20px;
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        border: 2px solid rgb(240, 144, 54);
+    }
+    section{
+        padding: 25px 30px 20px 30px;
+        background: #fff;
+    }
+    section .question_text{
+        font-size: 20px;
+        font-weight: 600;
+    }
+    section .option_text{
+        padding: 20px 0px;
+        display: block;   
+    }
+    section .option_text .option{
+        background: aliceblue;
+        border: 1px solid #84c5fe;
+        border-radius: 5px;
+        padding: 8px 15px;
+        font-size: 17px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    section .option_text .option:last-child{
+        margin-bottom: 0px;
+    }
+    section .option_text .option:hover{
+        color: #004085;
+        background: #cce5ff;
+        border: 1px solid #b8daff;
+    }
+    .question_box .buttons button{
+        margin: 0 10px;
+        height: 40px;
+        width: 80px;
+        padding: 0 10px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+    .buttons button.answer_btn{
+        position: absolute;
+        top: 85%;
+        left: 100px;
+        color: #fff;
+        background: rgb(240, 144, 54)
+    }
+    .buttons button.next_btn{
+        position: absolute;
+        top: 85%;
+        right: 20%;
+        color: #fff;
+        background: rgb(240, 144, 54)
+    }
+
+</style>
+<!--Start Button -->
+<div class="start_btn"><button>Start Practice</button></div>
+<!-- Question Box -->
+<div class="question_box">
+    <section>
+        <div class="question_text"> 
+            <!-- Content from the JavaScript section below -->
+        </div>
+        <div class="option_text">
+            <!-- Content from the JavaScript section below -->
+        </div>
+    </section>
+    <div class="buttons">
+        <button class="answer_btn">Answer</button>            
+        <button class="next_btn">Next</button>
+    </div>        
+</div>
+<!--Answer Box-->
+<div class="answer_box">
+        <div class="choice_text">
+            <!-- Content from the JavaScript section below -->
+        </div>  
+        <div class="explanation_text">
+            <!-- Content from the JavaScript section below -->
+        </div>    
+</div>
+
+<script>
+    // retrieve data from database
+    var questions = JSON.parse('{{ QueList | tojson | safe}}');
+    var solutions = JSON.parse('{{ SolList | tojson | safe}}');
+    var explanations = JSON.parse('{{ ExplanList | tojson | safe}}');        
+    var optionAs = JSON.parse('{{ AList | tojson | safe}}');
+    var optionBs = JSON.parse('{{ BList | tojson | safe}}');
+    var optionCs = JSON.parse('{{ CList | tojson | safe}}');
+    var optionDs = JSON.parse('{{ DList | tojson | safe}}');
+
+    const question_box = document.querySelector(".question_box");
+    const option_text = document.querySelector(".option_text");
+    const answer_box = document.querySelector(".answer_box");
+
+    let index = 0;
+
+    // Onclick of start_btn
+    const start_btn = document.querySelector(".start_btn button");
+    start_btn.onclick = ()=>{
+        question_box.classList.add("activeQuiz"); 
+        showQuetions(index); 
+    }
+    // Onclick of answer_btn
+    const answer_btn = document.querySelector(".answer_btn");
+    answer_btn.onclick = ()=>{
+        answer_box.classList.add("activeAnswer");
+        showAnswers(index); 
+    }
+    // Onclick of next_btn
+    // After all the questions are answered, it returns to the first question
+    const next_btn = document.querySelector(".next_btn");
+    next_btn.onclick = ()=>{
+        answer_box.classList.remove("activeAnswer");    
+        if (index < questions.length - 1) { 
+            index++; 
+            showQuetions(index); 
+        }  else {
+            index = 0;
+            showQuetions(index);
+        }
+    }
+
+    function showQuetions(index){
+        const question_text = document.querySelector(".question_text");
+        let que_tag = '<span>'+ (index + 1) + ". " + questions[index] +'</span>';
+        let option_tag = '<div class="option"><span>'+ "A. " + optionAs[index] +'</span></div>'
+        + '<div class="option"><span>'+ "B. " +  optionBs[index] +'</span></div>'
+        + '<div class="option"><span>'+ "C. " +  optionCs[index] +'</span></div>'
+        + '<div class="option"><span>'+ "D. " +  optionDs[index] +'</span></div>';
+        question_text.innerHTML = que_tag; 
+        option_text.innerHTML = option_tag; 
+    }
+
+    function showAnswers(index){
+        const choice_text = document.querySelector(".choice_text");
+        const explanation_text = document.querySelector(".explanation_text"); 
+        let choice_tag = '<span>'+ "Solution: " + solutions[index] + '</span>';
+        let explanation_tag = '<span>'+ "Reason: " + explanations[index] + '</span>';
+        choice_text.innerHTML = choice_tag; 
+        explanation_text.innerHTML = explanation_tag; 
+    }
+</script>
+
 {% endblock content %}
