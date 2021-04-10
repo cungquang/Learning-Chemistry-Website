@@ -35,7 +35,7 @@ class Produces(db.Model):
     # Products.ProductFormula references Compound.ChemicalFormula
     ReactantFormula = db.Column(db.String(30), db.ForeignKey('compound.ChemicalFormula'), primary_key = True, nullable = False)
     ProductFormula = db.Column(db.String(30), db.ForeignKey('compound.ChemicalFormula'), primary_key = True, nullable = False)
-    ChemicalEquation = db.Column(db.String(100), nullable = False
+    ChemicalEquation = db.Column(db.String(100), nullable = False)
 
     # Enable to interact with the data from Compound
     compound_ref = db.relationship('Compound', foreign_keys = [ReactantFormula])
