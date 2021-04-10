@@ -117,5 +117,69 @@
     </div>
 {% endblock content%}
 
+{% block list %}
+    <style>
+        /* Style The Dropdown Button */
+        .dropbtn {
+          background-color: #2F4F4F;
+          color: white;
+          padding-top: 10px;
+          padding-right: 80px;
+          padding-left: 80px;
+          padding-bottom: 10px;
+          font-size: 15px;
+          border: none;
+          cursor: pointer;
+        }
 
-        
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+          position: relative;
+          display: inline-block;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #2F4F4F;
+          min-width: 140px;
+          box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+          color: white;
+          padding-top: 10px;
+          padding-right: 85px;
+          padding-left: 91px;
+          padding-bottom: 10px;
+          font: 15px Arial, sans-serif;
+          text-decoration-style: solid;
+          display: block;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: #2F4F4F}
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {
+          display: block;
+        }
+
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+        .dropdown:hover .dropbtn {
+          background-color: #2F4F4F;
+        }
+    </style>
+    <div class="dropdown">
+      <button class="dropbtn">Navigation</button>
+      <div class="dropdown-content">
+        <a href="{{ url_for('search') }}">Search</a>
+        <a href="{{ url_for('practice')}}">Practice</a>
+        <a href="{{ url_for('forum')}}">Forum</a>
+      </div>
+    </div> 
+
+{% endblock list %}
