@@ -41,12 +41,15 @@ Other operation with database:
 #-----------------------------RegisterUser Table----------------------------------- 
 
 #load_user(user_id):
-#Pre-cond:
+#Pre-cond: require user_id
 #Post-cond:
 @login_manager.user_loader
 def load_user(user_id):
 	return RegisterUser.query.get(int(user_id))
 
+#RegisterUser table:
+#PK: id
+#FK: none
 class RegisterUser(db.Model, UserMixin):
 	__tablename__ = "registeruser"
 	__table_args__={'sqlite_autoincrement': True}
@@ -67,6 +70,9 @@ class RegisterUser(db.Model, UserMixin):
 
 
 #--------------------------------Discuss Table------------------------------------- 
+#Discuss table:
+#PK: UserID, PostID
+#FK: UserID, PostID
 class Discuss(db.Model):
 	__tablename__ = "discuss"	
 	PostID = db.Column(db.Integer, db.ForeignKey('post.PostID'), primary_key = True, nullable = False)
@@ -79,6 +85,9 @@ class Discuss(db.Model):
 
 
 #----------------------------------Post Table-------------------------------------- 
+#Post table:
+#PK: PostID
+#FK: AuthorID
 class Post(db.Model):
 	__tablename__ = "post"
 	__table_args__={'sqlite_autoincrement': True}
@@ -98,6 +107,9 @@ class Post(db.Model):
 
 
 #-------------------------------ReplyComment table-------------------------------- 
+#ReplyComment table:
+#PK: CommentID, PostID, AuthorID
+#FK: PostID, AuthorID
 class ReplyComment(db.Model):
 	__tablename__ = "replycomment"
 	__table_args__={'sqlite_autoincrement': True}
