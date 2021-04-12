@@ -1,58 +1,67 @@
-{% extends "layout.html" %}                            
+{% extends "layout.html" %}
 
-{% block content %} 
-    <style>
-        @font-face {
-            font-family: MyFont;
-            src: url(nightmore_brush.ttf);
-        }
+{% block content %}
+<style>
+  @font-face {
+    font-family: MyFont;
+    src: url(nightmore_brush.ttf);
+  }
 
-        #content{
-            background-color: lightblue;
-            color: black;
-            padding: 0px;
-            font-size: 20px;
-            text-align: center;
-        }
-        #content2{
-            background-color:bisque;
-            color: black;
-            padding: 0px;
-            font-size: 20px;
-            text-align: center;
-        }
-        .summary{
-            background-color:greenyellow;
-            font-size: 25px;
-            text-align: center;
+  #content {
+    background-color: lightblue;
+    color: black;
+    padding: 0px;
+    font-size: 20px;
+    text-align: center;
+  }
 
-        }
-        .hidden{
-            display: none
-            }
+  #content2 {
+    background-color: bisque;
+    color: black;
+    padding: 0px;
+    font-size: 20px;
+    text-align: center;
+  }
 
-    </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script>
-    //jsonify the all_compounds 
-    var allCompounds = "{{ all_compounds | safe}}";
-    // replace "None" values with " "
-    allCompounds = allCompounds.replace(/None/g, '""')
+  .note{
+    background-color: gold;
+    font-size: 22px;
+    text-align: center;
+  }
 
-    //replace single quotation mark with a double
-    allCompounds = allCompounds.replace(/'/g, '"')
-    allCompounds = JSON.parse(allCompounds);
+  .summary {
+    background-color: greenyellow;
+    font-size: 25px;
+    text-align: center;
 
-    //ajax function to display the Compound information
-    function getComp(textContent){
-        $.ajax({
-            method:"post",
-            url:"/compoundinfo",
-            data:{text:textContent},
-            success:function(res2){
-                var data ="<div class='content2-group'>";
-                data += `<p class='content2-group-item'> Compound Name: ${res2[0].CompoundName}<br/>
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+  //jsonify the all_compounds 
+  var allCompounds = "{{ all_compounds | safe}}";
+  // replace "None" values with " "
+  allCompounds = allCompounds.replace(/None/g, '""')
+
+  //replace single quotation mark with a double
+  allCompounds = allCompounds.replace(/'/g, '"')
+  allCompounds = JSON.parse(allCompounds);
+
+  //ajax function to display the Compound information
+  function getComp(textContent) {
+    $.ajax({
+      method: "post",
+      url: "/compoundinfo",
+      data: { text: textContent },
+      success: function (res2) {
+        var data = "<div class='content2-group'>";
+        data += `<p class='content2-group-item'> Compound Name: ${res2[0].CompoundName}<br/>
                                                          Chemical Formula:  ${res2[0].ChemicalFormula}<br/>
                                                          Atomic Number: ${res2[0].AtomicNumber}<br/>
                                                          State: ${res2[0].State}<br/>
@@ -60,144 +69,148 @@
                                                          Boiling Point: ${res2[0].BoilingPoint}<br/>
                                                          Appearance: ${res2[0].Appearance}<br/>
                                                          Molecular Weight: ${res2[0].MolecularWeight}<br/>
-                                                 </p>`; 
-                 data+= "</div>";
-                 $("#content2").html(data);
-            } 
-        });
-    }
+                                                 </p>`;
+        data += "</div>";
+        $("#content2").html(data);
+      }
+    });
+  }
 
-    //ajax function to display Product information 
-    function getProd(textContent){
-        $.ajax({
-             method:"post",
-             url:"/livesearch",
-             data:{text:textContent},
-             success:function(res){
-                console.log(res);
-                 var data = "<div class='content-group'>";
-                     data += `<p class='content-group-item'> Reactant: ${res[0].ReactantFormula}<br/>
+  //ajax function to display Product information 
+  function getProd(textContent) {
+    $.ajax({
+      method: "post",
+      url: "/livesearch",
+      data: { text: textContent },
+      success: function (res) {
+        console.log(res);
+        var data = "<div class='content-group'>";
+        data += `<p class='content-group-item'> Reactant: ${res[0].ReactantFormula}<br/>
                                                     Product:  ${res[0].ProductFormula} <br/>
                                                     Equation: ${res[0].ChemicalEquation} <br/>
-                                                    Other Possible Reactions Involving ${res[0].ReactantFormula}: ${res[0].Occurence} </p>`;   
-                 data += "</div>";
-                 $("#content").html(data);
-             }
-         });
-    }
-
-    $(document).ready(function(){
-    //     if ($('input:text').val()=="")
-    //    {
-    //         $("p").toggleClass("hidden");
-    //    }
-    //     else{
-        //     if ($("p").hasClass("hidden")){
-        //     $("p").removeClass("hidden"); 
-        // }
-            $("#livebox").on("input",function(e){
-            $("#datalist").empty();
-            var data = "<div class='list-group'>";
-            $.each(allCompounds,function(index,value){
-                if (value.CompoundName.includes(e.target.value)) {
-                    data += "<p class='list-group-item list-group-item-action'>"+value.ChemicalFormula+"</p>";
-                }
-            });
-            data += "</div>";
-            $("#datalist").html(data);
-            $('.list-group-item').on('click', function() {       
-                getComp($(this).text());
-                getProd($(this).text());
-          })
-        });
-    // }
+                                                    Other Possible Reactions Involving ${res[0].ReactantFormula}: ${res[0].Occurence} </p>`;
+        data += "</div>";
+        $("#content").html(data);
+      }
     });
+  }
 
+  //function to display search bar and suggestions
+  $(document).ready(function () {
+    $("#livebox").on("input", function (e) {
+      //check if the bar is empty. If empty, do not show suggestions
+      if ($('input:text').val() == "") {
+        $("p").addClass("hidden");
+      }
+      else {
+        $("p").removeClass("hidden");
+        $("#datalist").empty();
+        var data = "<div class='list-group'>";
+        $.each(allCompounds, function (index, value) {
+          if (value.CompoundName.includes(e.target.value)) {
+            data += "<p class='list-group-item list-group-item-action'>" + value.ChemicalFormula + "</p>";
+          }
+        });
+        data += "</div>";
+        $("#datalist").html(data);
+        $('.list-group-item').on('click', function () {
+          getComp($(this).text());
+          getProd($(this).text());
+        })
+      }
+    });
+  });
 
-    </script> 
+</script>
 
-	<div class="container">
-            <div class = "search-input" >
-                <div class ="search">
-                <label>Search... </label>
-                <input type ="text" id = "livebox" name = "text" class = "form-control" placeholder = "Lookup Compound/Reactant/Product" autocomplete = "off">
-                <p id = "datalist"></p>
-                <div id = "content">
-                </div>
-                <div id = "content2">
-                </div>
-           </div>
-        </div>
+<div class="container">
+  <div class="search-input">
+    <div class="search">
+      <label>Search... </label>
+      <input type="text" id="livebox" name="text" class="form-control" placeholder="Lookup Compound/Reactant/Product"
+        autocomplete="off">
+      <p id="datalist"></p>
+      <div id="content">
+      </div>
+      <div id="content2">
+      </div>
     </div>
+  </div>
+</div>
 
-    <div class="summary">
-        There are {{count_comp}} Compounds in our database
-    </div>
+<div class="summary">
+  There are {{count_comp}} Compounds in our database
+</div>
+<div class="note">
+  Note: [object Object] means N/A
+</div>
 {% endblock content%}
 
 {% block list %}
-    <style>
-        /* Style The Dropdown Button */
-        .dropbtn {
-          background-color: #2F4F4F;
-          color: white;
-          padding-top: 10px;
-          padding-right: 80px;
-          padding-left: 80px;
-          padding-bottom: 10px;
-          font-size: 15px;
-          border: none;
-          cursor: pointer;
-        }
+<style>
+  /* Style The Dropdown Button */
+  .dropbtn {
+    background-color: #2F4F4F;
+    color: white;
+    padding-top: 10px;
+    padding-right: 80px;
+    padding-left: 80px;
+    padding-bottom: 10px;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+  }
 
-        /* The container <div> - needed to position the dropdown content */
-        .dropdown {
-          position: relative;
-          display: inline-block;
-        }
+  /* The container <div> - needed to position the dropdown content */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
 
-        /* Dropdown Content (Hidden by Default) */
-        .dropdown-content {
-          display: none;
-          position: absolute;
-          background-color: #2F4F4F;
-          min-width: 140px;
-          box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.2);
-          z-index: 1;
-        }
+  /* Dropdown Content (Hidden by Default) */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #2F4F4F;
+    min-width: 140px;
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
 
-        /* Links inside the dropdown */
-        .dropdown-content a {
-          color: white;
-          padding-top: 10px;
-          padding-right: 85px;
-          padding-left: 91px;
-          padding-bottom: 10px;
-          font: 15px Arial, sans-serif;
-          text-decoration-style: solid;
-          display: block;
-        }
+  /* Links inside the dropdown */
+  .dropdown-content a {
+    color: white;
+    padding-top: 10px;
+    padding-right: 85px;
+    padding-left: 91px;
+    padding-bottom: 10px;
+    font: 15px Arial, sans-serif;
+    text-decoration-style: solid;
+    display: block;
+  }
 
-        /* Change color of dropdown links on hover */
-        .dropdown-content a:hover {background-color: #2F4F4F}
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {
+    background-color: #2F4F4F
+  }
 
-        /* Show the dropdown menu on hover */
-        .dropdown:hover .dropdown-content {
-          display: block;
-        }
+  /* Show the dropdown menu on hover */
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
 
-        /* Change the background color of the dropdown button when the dropdown content is shown */
-        .dropdown:hover .dropbtn {
-          background-color: #2F4F4F;
-        }
-    </style>
-    <div class="dropdown">
-      <button class="dropbtn">Navigation</button>
-      <div class="dropdown-content">
-        <a href="{{ url_for('search') }}">Search</a>
-        <a href="{{ url_for('practice')}}">Practice</a>
-        <a href="{{ url_for('forum')}}">Forum</a>
-      </div>
-    </div> 
+  /* Change the background color of the dropdown button when the dropdown content is shown */
+  .dropdown:hover .dropbtn {
+    background-color: #2F4F4F;
+  }
+</style>
+<div class="dropdown">
+  <button class="dropbtn">Navigation</button>
+  <div class="dropdown-content">
+    <a href="{{ url_for('search') }}">Search</a>
+    <a href="{{ url_for('practice')}}">Practice</a>
+    <a href="{{ url_for('forum')}}">Forum</a>
+  </div>
+</div>
 
 {% endblock list %}
