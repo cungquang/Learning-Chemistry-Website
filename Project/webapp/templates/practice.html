@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
     body{
@@ -14,17 +13,27 @@
     .start_btn{
         position: absolute;
         top: 300%;
-        left: 60%;
+        left: 40%;
+    }
+    .review_btn{
+        position: absolute;
+        top: 300%;
+        left: 90%;
     }
     .question_box{
         position: absolute;
         top: 240%;
-        left: 70%;
+        left: 75%;
     }
     .answer_box{
         position: absolute;
         top: 550%;
-        left: 70%;
+        left: 75%;
+    }
+    .review_box{
+        position: absolute;
+        top: 210%;
+        left: 75%;
     }
     .question_box.activeQuiz{
         opacity: 1;
@@ -38,7 +47,24 @@
         pointer-events: auto;
         transform: translate(-50%, -50%) scale(1);
     }
+    .review_box.activeReview{
+        opacity: 1;
+        z-index: 5;
+        pointer-events: auto;
+        transform: translate(-50%, -50%) scale(1);
+    }
     .start_btn button{
+        font-size: 25px;
+        font-weight: 500;
+        color: #fff;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        background: rgb(240, 144, 54);
+        cursor: pointer;
+    }
+    .review_btn button{
         font-size: 25px;
         font-weight: 500;
         color: #fff;
@@ -63,8 +89,8 @@
         width: 600px;
         height: 100px;
         padding: 8px 25px;
-        font-size: 16px;
-        font-weight: 400;
+        font-size: 18px;
+        font-weight: 450;
         background: #fff;
         border-radius: 20px;
         transform: translate(-50%, -50%) scale(0.9);
@@ -72,6 +98,14 @@
         pointer-events: none;
         transition: all 0.3s ease;
         border: 2px solid rgb(240, 144, 54);
+    }
+    .review_box{
+        width: 680px;
+        height: 400px;
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
     }
     section{
         padding: 25px 30px 20px 30px;
@@ -90,7 +124,8 @@
         border: 1px solid #84c5fe;
         border-radius: 5px;
         padding: 8px 15px;
-        font-size: 17px;
+        font-size: 18px;
+        font-weight: 450;
         margin-bottom: 15px;
         cursor: pointer;
         transition: all 0.3s ease;
@@ -106,6 +141,19 @@
         background: #cce5ff;
         border: 1px solid #b8daff;
     }
+    section .review_text .fullQue{
+        background: aliceblue;
+        border: 2px solid #84c5fe;
+        border-radius: 10px;
+        padding: 8px 20px;
+        font-size: 20px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    } 
     .question_box .buttons button{
         margin: 0 10px;
         height: 40px;
@@ -133,10 +181,33 @@
         color: #fff;
         background: rgb(240, 144, 54)
     }
+    .review_box .reviewbuttons button{
+        margin: 0 10px;
+        height: 40px;
+        width: 80px;
+        padding: 0 10px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+    .reviewbuttons button.nextReview_btn{
+        position: absolute;
+        top: 130%;
+        left: 42%;
+        color: #fff;
+        background: rgb(240, 144, 54)
+    }
+
 
 </style>
 <!--Start Button -->
 <div class="start_btn"><button>Start Practice</button></div>
+<!--Review Button -->
+<div class="review_btn"><button>Review</button></div>
 <!-- Question Box -->
 <div class="question_box">
     <section>
@@ -161,6 +232,17 @@
             <!-- Content from the JavaScript section below -->
         </div>    
 </div>
+<!--Review Box-->
+<div class="review_box">
+    <section>
+        <div class="review_text"> 
+            <!-- Content from the JavaScript section below -->
+        </div>
+    </section>
+    <div class="reviewbuttons">           
+        <button class="nextReview_btn">Next</button>
+    </div>  
+</div>
 
 <script>
     // retrieve data from database
@@ -171,12 +253,15 @@
     var optionBs = JSON.parse('{{ BList | tojson | safe}}');
     var optionCs = JSON.parse('{{ CList | tojson | safe}}');
     var optionDs = JSON.parse('{{ DList | tojson | safe}}');
+    var joinQues = JSON.parse('{{ joinList | tojson | safe}}');
 
     const question_box = document.querySelector(".question_box");
     const option_text = document.querySelector(".option_text");
     const answer_box = document.querySelector(".answer_box");
+    const review_box = document.querySelector(".review_box");
 
     let index = 0;
+    let review_page = 0;
 
     // Onclick of start_btn
     const start_btn = document.querySelector(".start_btn button");
@@ -202,7 +287,24 @@
             index = 0;
             showQuetions(index);
         }
-    }
+    }  
+    // Onclick of review_btn
+    const review_btn = document.querySelector(".review_btn button");
+    review_btn.onclick = ()=>{
+        review_box.classList.add("activeReview");  
+        showReviews(review_page);   
+    }  
+    // Onclick of nextReview_btn
+    const nextReview_btn = document.querySelector(".nextReview_btn");
+    nextReview_btn.onclick = ()=>{   
+        if (review_page * 5 < questions.length - 1) { 
+            review_page += 5; 
+            showReviews(review_page); 
+        }  else {
+            review_page = 0;
+            showReviews(review_page); 
+        }
+    }    
 
     function showQuetions(index){
         const question_text = document.querySelector(".question_text");
@@ -223,73 +325,86 @@
         choice_text.innerHTML = choice_tag; 
         explanation_text.innerHTML = explanation_tag; 
     }
+
+    function showReviews(review_page){
+        const review_text = document.querySelector(".review_text");
+        var text_arr = [];
+        var i;
+        for (i = review_page; i < review_page + 5; i++){
+            text_arr.push("Q: " + joinQues[i][0] + "<br>" + "A: " + joinQues[i][1] + "<br>");
+        }
+        let review_tag = '<div class="fullQue"><span>'+ text_arr[0] +'</span></div>'
+        + '<div class="fullQue"><span>'+ text_arr[1] +'</span></div>'
+        + '<div class="fullQue"><span>'+ text_arr[2] +'</span></div>'
+        + '<div class="fullQue"><span>'+ text_arr[3] +'</span></div>'
+        + '<div class="fullQue"><span>'+ text_arr[4] +'</span></div>';
+        review_text.innerHTML = review_tag;
+    } 
+    
 </script>
 
+<style>
+    /* Style The Dropdown Button */
+    .dropbtn {
+        background-color: #2F4F4F;
+        color: white;
+        padding-top: 10px;
+        padding-right: 80px;
+        padding-left: 80px;
+        padding-bottom: 10px;
+        font-size: 15px;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Dropdown Content (Hidden by Default) */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #2F4F4F;
+        min-width: 140px;
+        box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    /* Links inside the dropdown */
+    .dropdown-content a {
+        color: white;
+        padding-top: 10px;
+        padding-right: 85px;
+        padding-left: 91px;
+        padding-bottom: 10px;
+        font: 15px Arial, sans-serif;
+        text-decoration-style: solid;
+        display: block;
+    }
+
+    /* Change color of dropdown links on hover */
+    .dropdown-content a:hover {background-color: #2F4F4F}
+
+    /* Show the dropdown menu on hover */
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    /* Change the background color of the dropdown button when the dropdown content is shown */
+    .dropdown:hover .dropbtn {
+        background-color: #2F4F4F;
+    }
+</style>
+<div class="dropdown">
+    <button class="dropbtn">Navigation</button>
+    <div class="dropdown-content">
+    <a href="{{ url_for('search') }}">Search</a>
+    <a href="{{ url_for('practice')}}">Practice</a>
+    <a href="{{ url_for('forum')}}">Forum</a>
+    </div>
+</div> 
+
 {% endblock content %}
-
-{% block list %}
-    <style>
-        /* Style The Dropdown Button */
-        .dropbtn {
-          background-color: #2F4F4F;
-          color: white;
-          padding-top: 10px;
-          padding-right: 80px;
-          padding-left: 80px;
-          padding-bottom: 10px;
-          font-size: 15px;
-          border: none;
-          cursor: pointer;
-        }
-
-        /* The container <div> - needed to position the dropdown content */
-        .dropdown {
-          position: relative;
-          display: inline-block;
-        }
-
-        /* Dropdown Content (Hidden by Default) */
-        .dropdown-content {
-          display: none;
-          position: absolute;
-          background-color: #2F4F4F;
-          min-width: 140px;
-          box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.2);
-          z-index: 1;
-        }
-
-        /* Links inside the dropdown */
-        .dropdown-content a {
-          color: white;
-          padding-top: 10px;
-          padding-right: 85px;
-          padding-left: 91px;
-          padding-bottom: 10px;
-          font: 15px Arial, sans-serif;
-          text-decoration-style: solid;
-          display: block;
-        }
-
-        /* Change color of dropdown links on hover */
-        .dropdown-content a:hover {background-color: #2F4F4F}
-
-        /* Show the dropdown menu on hover */
-        .dropdown:hover .dropdown-content {
-          display: block;
-        }
-
-        /* Change the background color of the dropdown button when the dropdown content is shown */
-        .dropdown:hover .dropbtn {
-          background-color: #2F4F4F;
-        }
-    </style>
-    <div class="dropdown">
-      <button class="dropbtn">Navigation</button>
-      <div class="dropdown-content">
-        <a href="{{ url_for('search') }}">Search</a>
-        <a href="{{ url_for('practice')}}">Practice</a>
-        <a href="{{ url_for('forum')}}">Forum</a>
-      </div>
-    </div> 
-
-{% endblock list %}
