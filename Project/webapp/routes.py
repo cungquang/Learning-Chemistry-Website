@@ -292,11 +292,14 @@ def delete_reply(postid,replyid):
 
 # routes for John + Chris
 #---------------------------------Search Route----------------------------------- 
+#Routes for search and create search box
 @app.route('/search')
 def search():
+	#create a dictionary to store and index the Chemical Formulas 
     all_compounds = Compound.query.all()
     compound_headers = ["CompoundName","ChemicalFormula","AtomicNumber","State","MeltingPoint","BoilingPoint","Appearance","MolecularWeight"]
     compound_dict = {}
+	#loop to fill in the dictionary
     for i, row in enumerate(all_compounds):
         index = 0
         compound_dict[i] = {compound_headers[index]: row.CompoundName, compound_headers[index+1]: row.ChemicalFormula, compound_headers[index+2]: row.AtomicNumber, compound_headers[index+3]: row.State, compound_headers[index+4]: row.MeltingPoint, compound_headers[index+5]: row.Appearance, compound_headers[index+6]: row.MolecularWeight}
@@ -306,9 +309,9 @@ def search():
 	# SELECT COUNT(*) FROM Compound;
     compounds_counts=db.session.query(Compound, func.count()).all()
     Ccounts_result = compounds_counts[0][1]
-    print("The number of compounds in our database is: ",Ccounts_result)
     return render_template('search.html', title='Search', all_compounds = compound_json, count_comp = Ccounts_result)
 
+#function to replace "none" arguments
 def replace_none(test_dict):
     # checking for dictionary and replacing if None
     if isinstance(test_dict, dict):
@@ -322,24 +325,30 @@ def replace_none(test_dict):
         for val in test_dict:
             replace_none(val)
 
-
+#Route to look up compound information
 @app.route("/compoundinfo",methods=["POST","GET"])
 def compoundinfo():
-    searchbox = request.form.get("text")    
+	#Get what user selected in searchbox
+    searchbox = request.form.get("text") 
+	#Filter and choose the first Chemical Formula row that matches the searchbox   
     compound = Compound.query.filter(Compound.ChemicalFormula == searchbox).first()
+	#Create a dictionary to later jsonify it
     compound_headers = ["CompoundName","ChemicalFormula","AtomicNumber","State","MeltingPoint","BoilingPoint","Appearance","MolecularWeight"]
     compound_dict = {}
     index = 0
     compound_dict[index] = {compound_headers[index]: compound.CompoundName, compound_headers[index+1]: compound.ChemicalFormula, compound_headers[index+2]: compound.AtomicNumber, compound_headers[index+3]: compound.State, compound_headers[index+4]: compound.MeltingPoint, compound_headers[index+5]: compound.BoilingPoint, compound_headers[index+6]: compound.Appearance, compound_headers[index+7]: compound.MolecularWeight}
     keys_values = compound_dict.items()
     compound_json = {str(key): value for key, value in keys_values}
+	#replace "none value"
     replace_none(compound_json)
     return jsonify(compound_json)
 
-
+#route to look up the produce information
 @app.route("/livesearch",methods=["POST","GET"])
 def livesearch():
+	#Get what user selected in searchbox
     searchbox = request.form.get("text")
+	#Use Group By to count the instances of the selected compound
     reactant_counts = db.session.query(Produces,func.count()).group_by(Produces.ReactantFormula).filter_by(ReactantFormula = searchbox).first()
 	# if there're no match at all, give it a count = 0
     if reactant_counts == None:
@@ -357,14 +366,16 @@ def livesearch():
 	
 	# The total records of search in our table = counts in ReactantFormula + counts in ProductFormula
     total_counts = Rcounts_result + Pcounts_result
-    print("The Total Number of rows inloving",searchbox,"is",total_counts)
-    print("Searchbox: " + searchbox)
+	#Filter the Reactant Formula row or Product Formula row that matches the searchbox
     produce = Produces.query.filter((Produces.ReactantFormula == searchbox) | (Produces.ProductFormula == searchbox)).first()
+
+	#Create a dictionary to index the data and later stringify and jsoniy it 
     produce_headers = ["ReactantFormula", "ProductFormula", "ChemicalEquation", "Occurence"]
     produce_dict = {}
     index = 0
     produce_dict[index] = {produce_headers[index]: produce.ReactantFormula, produce_headers[index+1]: produce.ProductFormula, produce_headers[index+2]: produce.ChemicalEquation, produce_headers[index+3]: total_counts}
     keys_values = produce_dict.items()
     produce_json = {str(key): value for key, value in keys_values}
+	#replace "none" values
     replace_none(produce_json)
     return jsonify(produce_json)

@@ -27,16 +27,24 @@
             text-align: center;
 
         }
+        .hidden{
+            display: none
+            }
+
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
+    //jsonify the all_compounds 
     var allCompounds = "{{ all_compounds | safe}}";
-    //console.log(allCompounds);
+    // replace "None" values with " "
     allCompounds = allCompounds.replace(/None/g, '""')
+
+    //replace single quotation mark with a double
     allCompounds = allCompounds.replace(/'/g, '"')
     allCompounds = JSON.parse(allCompounds);
 
+    //ajax function to display the Compound information
     function getComp(textContent){
         $.ajax({
             method:"post",
@@ -59,6 +67,7 @@
         });
     }
 
+    //ajax function to display Product information 
     function getProd(textContent){
         $.ajax({
              method:"post",
@@ -78,7 +87,15 @@
     }
 
     $(document).ready(function(){
-        $("#livebox").on("input",function(e){
+    //     if ($('input:text').val()=="")
+    //    {
+    //         $("p").toggleClass("hidden");
+    //    }
+    //     else{
+        //     if ($("p").hasClass("hidden")){
+        //     $("p").removeClass("hidden"); 
+        // }
+            $("#livebox").on("input",function(e){
             $("#datalist").empty();
             var data = "<div class='list-group'>";
             $.each(allCompounds,function(index,value){
@@ -93,6 +110,7 @@
                 getProd($(this).text());
           })
         });
+    // }
     });
 
 
