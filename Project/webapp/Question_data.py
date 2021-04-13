@@ -19,7 +19,7 @@ class PracticeQuestion(db.Model):
 
 # --------------------------------------------------- Choice Table ----------------------------------------------------------------
 # Choice():
-# Pre-condition: None
+# Pre-condition: Table "PracticeQuestion" must exist
 # Post-condition: construct the table about multiple choices question
 class Choice(db.Model):
     __tablename__ = "choice"
@@ -39,7 +39,7 @@ class Choice(db.Model):
 
 # --------------------------------------------------- Learn Table ----------------------------------------------------------------
 # Learn():
-# Pre-condition: None
+# Pre-condition: Table "User" and "PracticeQuestion" must exist
 # Post-condition: construct the relationships between "User" and "PracticeQuestion"
 class Learn(db.Model):
     __tablename__ = "learn"
