@@ -57,6 +57,11 @@ def account():
 		#use variable for temporary carry data
 		new_user = RegisterUser(FirstName=signup.firstName.data, LastName=signup.lastName.data,
 			Email=signup.email.data, Password=hash_password)
+		# Assertion not allowing User to register as Admin or Administrator
+		assert new_user.FirstName != 'Admin'
+		assert new_user.FirstName != 'Administrator'
+		assert new_user.LastName != 'Admin'
+		assert new_user.LastName != 'Administrator'
 		
 		#Add user's registration data into the database
 		db.session.add(new_user)
