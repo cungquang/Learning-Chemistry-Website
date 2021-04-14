@@ -135,8 +135,6 @@ def practice():
 	joinList = []
 	for entry in JoinQue:
 		joinList.append(list(entry))
-	print(joinList[0][0])
-	print(joinList[0][1])
 
 	return render_template('practice.html', QueList = QueList, SolList = SolList,
 			ExplanList = ExplanList, AList = AList, BList = BList, CList = CList, DList = DList, joinList = joinList)
