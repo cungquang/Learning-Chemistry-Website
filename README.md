@@ -33,8 +33,6 @@ Command to execute project:
   - Linux: "python3 runweb.py" or "python runweb.py
   - Windown: "python3 runweb.py" or "python runweb.py"
 
---------------------------------------- Project Structure ---------------------------------------
-
 
 
 
