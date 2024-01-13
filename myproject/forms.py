@@ -1,19 +1,11 @@
 """
 *********************************************************************************
-*	Group of authors:															*
-*		Chris Liu																*
-*		Frank Dong																*
-*		John Canh Nhat Minh														*
-*		Hong Quang Cung															*
-*		Xixuan																	*
-*																				*
-*********************************************************************************
-*																				*
-*	File Description:															*
-*		- This file contains form that will be used on html file				*
-*		- Each function manages a form:											*
-*			+ CommentPost()														*
-*																				*
+*										*
+*	File Description:							*
+*		- This file contains form that will be used on html file	*
+*		- Each function manages a form:					*
+*			+ CommentPost()						*
+*										*
 *********************************************************************************
 """
 
