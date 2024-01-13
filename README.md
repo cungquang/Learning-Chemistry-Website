@@ -1,41 +1,55 @@
-#####################################################
-#                                                   #
-#    Project Name: Learning Chemistry Website       #
-#    Language: Python - Framework: Flask            #
-#                                                   #
-#####################################################
+# Project Name: Learning Chemistry Website
 
--------------------------------------- Project Description --------------------------------------
+## Project Information
 
-Description:
+- **Language:** Python
+- **Framework:** Flask
 
-    The website was built with education purpose to help highschool student to review knowledge about
-    chemistry. Users/students must register in order to use the application. The application allow users
-    to discuss with each other via blog. Besides, they can review chemistry knowledge via application, 
-    and practice with question bank that provided in the application.
+## Project Description
 
-Purpose: Educational purpose
+The Learning Chemistry Website was created for educational purposes, aiming to assist high school students in reviewing chemistry knowledge. Users/students are required to register to use the application. The platform allows users to engage in discussions via a blog, review chemistry concepts, and practice with a provided question bank.
 
-Target audience: Highschool student 
+### Purpose
+Educational purpose
 
-Hosting: Local machine
+### Target Audience
+High school students
 
-Tech stack:
+### Hosting
+Local machine
 
-    - Flask (Python)
-    - MySQL
-    - HTML/CSS
+### Tech Stack
 
------------------------------------- Execute/Compile Project ------------------------------------
-Command to execute project:
+- Flask (Python)
+- MySQL
+- HTML/CSS
 
-        - Linux: "python3 runweb.py" or "python runweb.py
-        - Windown: "python3 runweb.py" or "python runweb.py"
+## Execute/Compile Project
 
-Download the project to your local machine
-(ensure the local machine has latest version of Python)
+### Command to Execute Project
+
+- **Linux:**
+  ```bash
+  python3 runweb.py
+  or
+  python runweb.py
+  ```
+  
+- **Windows:**
+-   ```bash
+  python3 runweb.py
+  or
+  python runweb.py
+  ```
+
+## Downloading the Project
+
+To download the project to your local machine, ensure that the local machine has the latest version of Python installed.
+
+```bash
+git clone <repository-url>
+cd learning-chemistry-website
+```
 
 
-
-
-
+  
