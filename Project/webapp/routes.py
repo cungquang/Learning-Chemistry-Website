@@ -1,21 +1,13 @@
 """
 *********************************************************************************
-*	Group of authors:															*
-*		Chris Liu																*
-*		Frank Dong																*
-*		John Canh Nhat Minh														*
-*		Hong Quang Cung															*
-*		Xixuan																	*
-*																				*
-*********************************************************************************
-*																				*
-*	File Description:															*
-*		- This file contain route for each tab on the webpage					*
-*		- Each function represent a tab on the webpage, includes:				*
-*			+ def home()														*
-*			+ def forum()														*
-*			+ def practice()													*
-*																				*
+*										*
+*	File Description:							*
+*		- This file contain route for each tab on the webpage		*
+*		- Each function represent a tab on the webpage, includes:	*
+*			+ def home()						*
+*			+ def forum()						*
+*			+ def practice()					*
+*										*
 *********************************************************************************
 """
 
