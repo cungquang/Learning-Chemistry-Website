@@ -8,7 +8,7 @@
 -------------------------------------- Project Description --------------------------------------
 
 Description:
-
+  
   The website was built with education purpose to help highschool student to review knowledge about
   chemistry. Users/students must register in order to use the application. The application allow users
   to discuss with each other via blog. Besides, they can review chemistry knowledge via application, 
