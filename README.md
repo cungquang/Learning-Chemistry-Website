@@ -39,7 +39,8 @@ Local machine
   ```bash
   python3 runweb.py
   or
-  pytho
+  python runweb.py
+  ```
 
 ## Downloading the Project
 
