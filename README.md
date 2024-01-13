@@ -1,18 +1,21 @@
 
-#########################################################################
-#									#
-#			Project Name:					#
-#			Group Name: CHVN				#
-#			Members:					#
-#				Chris Liu				#
-#				John Minh				#
-#				Lei Dong				#
-#				Hong Quang Cung				#
-#									#
-#			Project Description:				#
-#		Search engine help highschool student review		#
-#		knowledge in chemistry					#
-#									#
-#									#
-#########################################################################
+#####################################################
+#									                                  #
+#    Project Name: Learning Chemistr Website        #
+#    Language: Python                               #
+#                                                   #
+#####################################################
+
+-------------------------------------- Project Description --------------------------------------
+
+
+
+------------------------------------ Execute/Compile Project ------------------------------------
+
+
+
+--------------------------------------- Project Structure ---------------------------------------
+
+
+
 
