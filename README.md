@@ -36,11 +36,10 @@ Local machine
   ```
   
 - **Windows:**
--   ```bash
+  ```bash
   python3 runweb.py
   or
-  python runweb.py
-  ```
+  pytho
 
 ## Downloading the Project
 
