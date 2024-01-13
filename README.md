@@ -27,13 +27,14 @@ Tech stack:
     - HTML/CSS
 
 ------------------------------------ Execute/Compile Project ------------------------------------
+Command to execute project:
+
+        - Linux: "python3 runweb.py" or "python runweb.py
+        - Windown: "python3 runweb.py" or "python runweb.py"
 
 Download the project to your local machine
 (ensure the local machine has latest version of Python)
 
-Command to execute project:
-  - Linux: "python3 runweb.py" or "python runweb.py
-  - Windown: "python3 runweb.py" or "python runweb.py"
 
 
 
